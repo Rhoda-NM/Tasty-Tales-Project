@@ -1,8 +1,9 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.ext.hybrid import hybrid_property
+from config import db,bcrypt
 
-from config import db
 
 # Models go here!
 class User(db.Model, SerializerMixin):
@@ -15,17 +16,17 @@ class User(db.Model, SerializerMixin):
     recipes = db.relationship('Recipes', back_populates='author')
     reviews = db.relationship('Reviews', back_populates='author')
     
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-    
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-    @classmethod
-    def authenticate(cls, username, password):
-        user = cls.query.filter_by(username=username).first()
-        if user and user.check_password(password):
-            return user
-        return None
+
+    @hybrid_property
+    def password(self):
+        return self.password_hash
+    @password.setter
+    def password(self, password):
+          self.password_hash = generate_password_hash(password)
+    def authenticate(self, password):
+        return check_password_hash(
+            self.password_hash,password)
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -33,6 +34,8 @@ class User(db.Model, SerializerMixin):
             'email': self.email,
           
         }
+    def __repr__(self):
+        return f'User {self.username}, ID: {self.id}'
     
 class Recipes(db.Model, SerializerMixin):
     __tablename__ = 'recipes'

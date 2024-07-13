@@ -9,7 +9,7 @@ from flask_migrate import Migrate  #  imported Migrate
 # Local imports
 from config import app, db 
 # Add your model imports
-from models import User, Recipes, Rating, RecipeTag, Reviews, Tags
+from models import User, Recipe, Rating, RecipeTag, Review, Tag
 
 app = Flask(__name__)
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
@@ -28,16 +28,6 @@ api = Api(app)
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
-class Login(Resource):
-
-    def post(self):
-        
-        username = request.get_json()['username']
-        user = User.query.filter(User.username == username).first()
-
-        session['user_id'] = user.id
-
-        return user.to_dict(), 200
 
 
 

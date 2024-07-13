@@ -2,7 +2,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from config import db
+from config import db, bcrypt
 
 # Models go here!
 class User(db.Model, SerializerMixin):
@@ -12,20 +12,16 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String, nullable=False, unique=True)
     password_hash = db.Column(db.String, nullable=False)
 
-    recipes = db.relationship('Recipes', back_populates='author')
-    reviews = db.relationship('Reviews', back_populates='author')
+    recipes = db.relationship('Recipe', back_populates='author')
+    reviews = db.relationship('Review', back_populates='author')
     
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf8')
     
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-    @classmethod
-    def authenticate(cls, username, password):
-        user = cls.query.filter_by(username=username).first()
-        if user and user.check_password(password):
-            return user
-        return None
+        return bcrypt.check_password_hash(self.password_hash, password)
+    
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -34,7 +30,7 @@ class User(db.Model, SerializerMixin):
           
         }
     
-class Recipes(db.Model, SerializerMixin):
+class Recipe(db.Model, SerializerMixin):
     __tablename__ = 'recipes'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
@@ -46,8 +42,8 @@ class Recipes(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     author = db.relationship('User', back_populates='recipes')
     ratings = db.relationship('Rating', back_populates='recipe')
-    reviews = db.relationship('Reviews', back_populates='recipe')
-    recipe_tag = db.relationship('RecipeTag', back_populates='recipe')
+    reviews = db.relationship('Review', back_populates='recipe')
+    recipe_tags = db.relationship('RecipeTag', back_populates='recipe')
     # Association proxy to get tags for this recipe through recipetag
     tags = association_proxy('recipe-tags', 'tags',
                                   creator=lambda tag_obj: RecipeTag(tag=tag_obj))
@@ -59,14 +55,14 @@ class Recipes(db.Model, SerializerMixin):
             return sum(rating.score for rating in self.ratings) / len(self.ratings)
         return None
 
-class Reviews(db.Model, SerializerMixin):
+class Review(db.Model, SerializerMixin):
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String, nullable=False)
 
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
-    recipe = db.relationship('Recipe', back_populates='ratings')
+    recipe = db.relationship('Recipe', back_populates='reviews')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     author = db.relationship('User', back_populates='reviews')
 class Rating(db.Model, SerializerMixin):
@@ -77,12 +73,12 @@ class Rating(db.Model, SerializerMixin):
 
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
     recipe = db.relationship('Recipe', back_populates='ratings')
-class Tags(db.Model, SerializerMixin):
+class Tag(db.Model, SerializerMixin):
     __tablename__ = 'tags'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable = False)
-    recipe_tag = db.relationship('RecipeTag', back_populates='tag')
+    recipe_tags = db.relationship('RecipeTag', back_populates='tag')
 
     # Association proxy to get recipes for this tag through recipetag
     recipes = association_proxy('recipe-tags', 'recipe',
@@ -99,6 +95,6 @@ class RecipeTag(db.Model, SerializerMixin):
     # Relationship mapping the recipetag to related recipe
     recipe = db.relationship('Recipe', back_populates='recipe_tags')
     # Relationship mapping the recipetag to related tag
-    tag = db.relationship('Tags', back_populates='recipe_tags')
+    tag = db.relationship('Tag', back_populates='recipe_tags')
 
     

@@ -12,10 +12,12 @@ authenticate_bp = Blueprint('authenticate_bp',__name__)
 #db.init_app(app)
 #bcrypt.init_app(app)
 jwt = JWTManager(app)
+def init_jwt(app):
+    jwt.init_app(app) 
 
 @jwt.user_identity_loader
-def user_identity_lookup(user):
-    return user.id
+def user_identity_lookup(user_id):
+    return user_id
 
 @jwt.user_lookup_loader
 def user_lookup_callback(_jwt_header, jwt_data):
@@ -24,7 +26,7 @@ def user_lookup_callback(_jwt_header, jwt_data):
 
 
 @authenticate_bp.route('/signup', methods=["POST"])
-def post():
+def signup():
         #data = request.get_json()
         username = request.get_json()['userName']
         email = request.get_json()['email']
@@ -35,7 +37,7 @@ def post():
                 return {'error': 'User already exists'}, 400
             
             new_user = User(username=username, email=email)
-            new_user.password_hash = password
+            new_user.set_password(password)
             db.session.add(new_user)
             db.session.commit()
 
@@ -47,24 +49,20 @@ def post():
 
         return {'error': '422 Unprocessable Entity'}, 422
 
+@authenticate_bp.route('/login', methods=["POST"])
+def login():
+    data=request.get_json()
+    email = data.get('email')
+    password = data.get('password')
     
-class Login(Resource):
+    user=User.query.filter_by(email=email).first()
+    
+    if user and user.check_password(password):
+        session['user_id'] = user.id
+        access_token = create_access_token(identity=user.id)
 
-    def post(self):
-        
-       data=request.get_json()
-       username = data.get('username')
-       password = data.get('password')
-       
-       user=User.query.filter_by(username=username).first()
-       
-       if user and user.check_password(password):
-           session['user_id'] = user.id
-           access_token = create_access_token(identity=user)
-
-           return {'user': user.to_dict(), 'access_token': access_token}, 200
-       
-       return {'error':'invalid username or password'},401
+        return {'user': user.to_dict(), 'access_token': access_token}, 200
+    return {'error':'invalid username or password'},401
    
 class Logout(Resource):
        def delete(self):
@@ -87,5 +85,4 @@ class CheckSession(Resource):
 #authenticate_api.add_resource(Logout, '/logout')
 #authenticate_api.add_resource(CheckSession, '/check_session')
 
-def init_jwt(app):
-    jwt.init_app(app)
+

@@ -8,7 +8,7 @@ from flask_migrate import Migrate  #  imported Migrate
 
 # Local imports
 from config import app, db, api
-from authenticate import authenticate_bp
+from authenticate import authenticate_bp, init_jwt
 # Add your model imports
 from models import User, Recipe, Rating, RecipeTag, Review, Tag
 
@@ -23,6 +23,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 # Initialize Flask-Restful Api
 api.init_app(app)
+init_jwt(app)
 app.register_blueprint(authenticate_bp, url_prefix='/user')
 # Views go here!
 

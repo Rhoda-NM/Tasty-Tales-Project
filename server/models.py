@@ -10,7 +10,7 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
     email = db.Column(db.String, nullable=False, unique=True)
-    password_hash = db.Column(db.String, nullable=False)
+    password_hash = db.Column(db.String(128))
 
     recipes = db.relationship('Recipe', back_populates='author')
     reviews = db.relationship('Review', back_populates='author')

@@ -1,20 +1,17 @@
-from flask import  request, make_response, jsonify, session
-from flask import Blueprint, session
+from flask import  request, make_response, jsonify, session, Blueprint
 from flask_restful import Resource, Api
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 # Local imports
-from config import db
+from config import db, app
 # Add your model imports
 from models import User
 
-authenticate_bp = Blueprint('authenticate_bp',__name__, url_prefix='/authenticate')
-
-authenticate_api = Api(authenticate_bp)
-
+authenticate_bp = Blueprint('authenticate_bp',__name__)
+#authenticate_api = Api(authenticate_bp)
 #db.init_app(app)
 #bcrypt.init_app(app)
-jwt = JWTManager()
+jwt = JWTManager(app)
 
 @jwt.user_identity_loader
 def user_identity_lookup(user):
@@ -25,9 +22,9 @@ def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]
     return User.query.filter_by(id=identity).one_or_none()
 
-class Signup(Resource):
 
-    def post(self):
+@authenticate_bp.route('/signup', methods=["POST"])
+def post():
         #data = request.get_json()
         username = request.get_json()['userName']
         email = request.get_json()['email']
@@ -49,6 +46,7 @@ class Signup(Resource):
     
 
         return {'error': '422 Unprocessable Entity'}, 422
+
     
 class Login(Resource):
 
@@ -83,10 +81,11 @@ class CheckSession(Resource):
             return user.to_dict(), 200
         return {'error': 'User not logged in'}, 401
 
-authenticate_api.add_resource(Signup, '/signup', endpoint='signup')
-authenticate_api.add_resource(Login, '/login')
-authenticate_api.add_resource(Logout, '/logout')
-authenticate_api.add_resource(CheckSession, '/check_session')
+#authenticate_api.add_resource(Signup, '/sign', endpoint='signup')
+#authenticate_api.add_resource(Login, '/login')
+
+#authenticate_api.add_resource(Logout, '/logout')
+#authenticate_api.add_resource(CheckSession, '/check_session')
 
 def init_jwt(app):
     jwt.init_app(app)

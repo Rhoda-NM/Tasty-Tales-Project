@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 //import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from './api/axios';
+//import axios from './api/axios';
 import './form.css'
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 const password_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const SIGNUP_URL = '/signup';
+const SIGNUP_URL = '/user/signup';
 
 const SignUp = () => {
     const userRef = useRef();
@@ -59,23 +59,31 @@ const SignUp = () => {
         console.log(userName, email, password)
 
         try {
-            const response = await axios.post(SIGNUP_URL,
-                JSON.stringify({ userName, email, password }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    //withCredentials: true
-                }
-            );
-            console.log(response?.data);
-            console.log(response?.accessToken);
-            console.log(JSON.stringify(response))
+            const response = await fetch(SIGNUP_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userName, email, password }),
+            });
+    
+            if (!response.ok) {
+                // Handle non-2xx HTTP responses
+                throw new Error('Network response was not ok');
+            }
+    
+            const data = await response.json();
+            console.log(data);
+            // Assuming your response contains an accessToken
+            console.log(data.accessToken);
             setSuccess(true);
-            //clear state and controlled inputs
-            //need value attrib on inputs for this
+    
+            // Clear state and controlled inputs
             setUserName('');
-            setEmail('')
+            setEmail('');
             setPassword('');
             setConfirmPassword('');
+    
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');

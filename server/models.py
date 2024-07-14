@@ -38,6 +38,9 @@ class Recipe(db.Model, SerializerMixin):
     ingredients = db.Column(db.Text, nullable=False)
     instructions = db.Column(db.Text, nullable=False)
 
+    serialize_only = ('id', 'title', 'description', 'ingredients', 'instructions','author.username',
+                      'tags.name')
+
     #relationships
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     author = db.relationship('User', back_populates='recipes')
@@ -45,7 +48,7 @@ class Recipe(db.Model, SerializerMixin):
     reviews = db.relationship('Review', back_populates='recipe')
     recipe_tags = db.relationship('RecipeTag', back_populates='recipe')
     # Association proxy to get tags for this recipe through recipetag
-    tags = association_proxy('recipe-tags', 'tags',
+    tags = association_proxy('recipe_tags', 'tag',
                                   creator=lambda tag_obj: RecipeTag(tag=tag_obj))
 
 
@@ -81,7 +84,7 @@ class Tag(db.Model, SerializerMixin):
     recipe_tags = db.relationship('RecipeTag', back_populates='tag')
 
     # Association proxy to get recipes for this tag through recipetag
-    recipes = association_proxy('recipe-tags', 'recipe',
+    recipes = association_proxy('recipe_tags', 'recipe',
                                   creator=lambda recipe_obj: RecipeTag(recipe=recipe_obj))
 
 class RecipeTag(db.Model, SerializerMixin):

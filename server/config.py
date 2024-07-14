@@ -30,5 +30,6 @@ bcrypt = Bcrypt(app)
 # Instantiate REST API
 api = Api(app)
 
+
 # Instantiate CORS
 CORS(app)

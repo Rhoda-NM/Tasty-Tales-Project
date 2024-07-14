@@ -7,7 +7,8 @@ from flask_restful import Resource, Api  #  imported Api
 from flask_migrate import Migrate  #  imported Migrate
 
 # Local imports
-from config import app, db 
+from config import app, db, api
+from authenticate import authenticate_bp
 # Add your model imports
 from models import User, Recipe, Rating, RecipeTag, Review, Tag
 
@@ -20,15 +21,29 @@ app.json.compact = False
 # Initialize database and migration
 db.init_app(app)
 migrate = Migrate(app, db)
-
-# Initialize API
-api = Api(app)
+# Initialize Flask-Restful Api
+api.init_app(app)
+app.register_blueprint(authenticate_bp, url_prefix='/user')
 # Views go here!
 
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
 
+@app.route('/recipe')
+def test():
+    response = [recipe.to_dict() for recipe in Recipe.query.all()]
+    return jsonify(response), 200
+
+
+
+class RecipeResource(Resource):
+    def get(self):
+        response = [recipe.to_dict() for recipe in Recipe.query.all()]
+        return jsonify(response), 200
+        
+
+api.add_resource(RecipeResource, '/recipes')
 
 
 if __name__ == '__main__':

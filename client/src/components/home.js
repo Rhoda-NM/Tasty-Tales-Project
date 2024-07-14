@@ -50,7 +50,7 @@ const Home = () => {
               <Card.Text>
                 Learn more about our hotel and our services.
               </Card.Text>
-              <Link to="/about">
+              <Link to="/recipes">
                 <Button variant="info">About Us</Button>
               </Link>
             </Card.Body>

@@ -4,12 +4,13 @@ import { AuthProvider, useAuth } from './AuthProvider'
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { Container } from 'react-bootstrap';
 import Home from './home'; // Assuming you have a Home component
-import Login from './login'; // Assuming you have a Login component
-import SignUp from './signup'; // Assuming you have a Signup component
+import Login from './USER/login'; // Assuming you have a Login component
+import SignUp from './USER/signup'; // Assuming you have a Signup component
 //import Recipe from './recipes'; // Import the Recipe component
 //import RecipeCards from './recipeCard'; // Import the RecipeCards component
 //import { Switch, Route } from "react-router-dom";
-import Recipes from "./recipes";
+import Recipes from "./RECIPES/recipes";
+import AddRecipeForm from './RECIPES/recipeform';
 
 const ProtectedRoute = ({ component: Component }) => {
   const { user, loading } = useAuth();
@@ -32,6 +33,7 @@ function App() {
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<SignUp />} />
               <Route exact path="/recipes"  element={<Recipes />} />
+              <Route exact path="/recipeform" element={<AddRecipeForm />} />
             </Routes>
           </Container>
         </div>

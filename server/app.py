@@ -9,6 +9,7 @@ from flask_migrate import Migrate  #  imported Migrate
 # Local imports
 from config import app, db, api
 from authenticate import authenticate_bp, init_jwt
+from recipe import recipe_bp
 # Add your model imports
 from models import User, Recipe, Rating, RecipeTag, Review, Tag
 
@@ -25,17 +26,12 @@ migrate = Migrate(app, db)
 api.init_app(app)
 init_jwt(app)
 app.register_blueprint(authenticate_bp, url_prefix='/user')
+app.register_blueprint(recipe_bp, url_prefix='/recipe')
 # Views go here!
 
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
-
-@app.route('/recipe')
-def test():
-    response = [recipe.to_dict() for recipe in Recipe.query.all()]
-    return jsonify(response), 200
-
 
 
 class RecipeResource(Resource):

@@ -42,7 +42,7 @@ def signup():
             db.session.commit()
 
             session['user_id'] = new_user.id
-            access_token = create_access_token(identity=new_user)
+            access_token = create_access_token(identity=new_user.id)
 
             return {'user': new_user.to_dict(), 'access_token': access_token}, 201
     

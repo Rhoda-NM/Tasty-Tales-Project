@@ -86,6 +86,14 @@ const Home = () => {
           </Link>
         </Col>
       </Row>
+      <Row className="mt-4 justify-content-center">
+        <Col md="6" className='text-center'>
+          <Link to="/recipeform">
+            <Button>Add Recipe</Button>
+          </Link>
+        </Col>
+      </Row>
+
 
     </Container>
   );

@@ -4,7 +4,7 @@ const Recipes = () => {
     const [recipes, setRecipes] = useState([]);
 
     useEffect(() => {
-        fetch('/recipe')  // Adjust the URL if your endpoint is different
+        fetch('/recipe/recipes')  // Adjust the URL if your endpoint is different
             .then(response => response.json())
             .then(data => setRecipes(data))
             .catch(error => console.error('Error fetching recipes:', error));

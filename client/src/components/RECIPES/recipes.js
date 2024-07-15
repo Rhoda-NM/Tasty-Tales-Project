@@ -4,7 +4,7 @@ const Recipes = () => {
     const [recipes, setRecipes] = useState([]);
 
     useEffect(() => {
-        fetch('/recipe/recipes')  // Adjust the URL if your endpoint is different
+        fetch('/api/recipes')  // Adjust the URL if your endpoint is different
             .then(response => response.json())
             .then(data => setRecipes(data))
             .catch(error => console.error('Error fetching recipes:', error));
@@ -18,9 +18,10 @@ const Recipes = () => {
                     <li key={recipe.id}>
                         <h2>{recipe.title}</h2>
                         <p>{recipe.description}</p>
-                        <img src={recipe.image} alt={recipe.title} />
+                        <img src={recipe.imgUrl} alt={recipe.title} />
                         <p>Ingredients: {recipe.ingredients}</p>
                         <p>Instructions: {recipe.instructions}</p>
+                        <p>Author: {recipe.author}</p>
                         {/* Add more details as needed */}
                     </li>
                 ))}

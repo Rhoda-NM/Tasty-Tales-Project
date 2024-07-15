@@ -217,7 +217,7 @@ with app.app_context():
     db.session.commit()
     print('Database seeded with example users!')
     
-    tag_objects = {}
+    """tag_objects = {}
     for recipe_data in recipes:
         for tag_name in recipe_data['tags']:
             if tag_name not in tag_objects:
@@ -241,7 +241,7 @@ with app.app_context():
             db.session.add(recipe_tag)
         db.session.add(recipe)
 
-    db.session.commit()
+    db.session.commit()"""
 
 
 if __name__ == '__main__':

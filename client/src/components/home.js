@@ -1,10 +1,14 @@
 import React from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Navbar from './navbar';
 
 const Home = () => {
   return (
     <Container className="mt-4">
+      <Row>
+        <Navbar />
+      </Row>
       {/* Title Card */}
       <Row className="justify-content-center">
         <Col>

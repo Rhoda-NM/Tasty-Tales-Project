@@ -26,7 +26,7 @@ migrate = Migrate(app, db)
 api.init_app(app)
 init_jwt(app)
 app.register_blueprint(authenticate_bp, url_prefix='/user')
-app.register_blueprint(recipe_bp, url_prefix='/recipe')
+app.register_blueprint(recipe_bp, url_prefix='/api')
 # Views go here!
 
 @app.route('/')

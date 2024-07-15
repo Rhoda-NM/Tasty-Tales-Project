@@ -37,9 +37,10 @@ class Recipe(db.Model, SerializerMixin):
     description = db.Column(db.String, nullable=False)
     ingredients = db.Column(db.Text, nullable=False)
     instructions = db.Column(db.Text, nullable=False)
+    imgUrl = db.Column(db.String(200), nullable=True)
 
     serialize_only = ('id', 'title', 'description', 'ingredients', 'instructions','author.username',
-                      'tags.name')
+                      'tags.name', 'imgUrl')
 
     #relationships
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -57,6 +58,17 @@ class Recipe(db.Model, SerializerMixin):
         if self.ratings:
             return sum(rating.score for rating in self.ratings) / len(self.ratings)
         return None
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'imgUrl': self.imgUrl,
+            'description': self.description,
+            'ingredients': self.ingredients,
+            'instructions': self.instructions,
+            'user_id': self.user_id,
+        }
 
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'comments'

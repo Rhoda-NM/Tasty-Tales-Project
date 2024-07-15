@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../AuthProvider';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import '../form.css'
 
 const Login = () => {
   const { login } = useAuth();
@@ -23,7 +24,7 @@ const Login = () => {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Sign In</h1>
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={LoginSchema}
@@ -39,10 +40,17 @@ const Login = () => {
             <Field type="password" name="password" />
             <ErrorMessage name="password" component="div" />
 
-            <button type="submit" disabled={isSubmitting}>Login</button>
+            <button type="submit" disabled={isSubmitting}>Sign In</button>
           </Form>
         )}
       </Formik>
+      <p>
+        Need an Account?<br />
+        <span className="line">
+            {/*put router link here*/}
+            <a href="#">Sign Up</a>
+        </span>
+      </p>
     </div>
   );
 };

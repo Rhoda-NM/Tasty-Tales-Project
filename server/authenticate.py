@@ -1,5 +1,5 @@
 from flask import  request, make_response, jsonify, session, Blueprint
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api,Reviews
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 # Local imports
@@ -68,7 +68,15 @@ class Logout(Resource):
        def delete(self):
            session['user_id'] = None
            return {},204
-
+class ReviewResource(Resource):
+    @jwt_required()
+    def post(self):
+        user_id = get_jwt_identity()
+        data = request.get_json()
+        new_review = Reviews(content=data['comment'], recipe_id=data['recipe_id'], user_id=user_id)
+        db.session.add(new_review)
+        db.session.commit()
+        return new_review.to_dict(), 201
 class CheckSession(Resource):
      @jwt_required()
      def get(self):

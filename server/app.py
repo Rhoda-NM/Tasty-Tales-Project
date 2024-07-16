@@ -12,6 +12,7 @@ from authenticate import authenticate_bp, init_jwt
 from recipe import recipe_bp
 # Add your model imports
 from models import User, Recipe, Rating, RecipeTag, Review, Tag
+from authenticate import Review,Rating
 
 app = Flask(__name__)
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'

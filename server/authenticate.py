@@ -1,5 +1,5 @@
 from flask import  request, make_response, jsonify, session, Blueprint
-from flask_restful import Resource, Api,Reviews
+from flask_restful import Resource, Api,Reviews,Rating
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 # Local imports
@@ -77,6 +77,65 @@ class ReviewResource(Resource):
         db.session.add(new_review)
         db.session.commit()
         return new_review.to_dict(), 201
+    @jwt_required()
+    def get(self,review_id):
+        review=Reviews.query.get(review_id)
+        if review:
+            return review.to_dict(),200
+        return {'error':'Review not found'},404
+    @jwt_required()
+    def put(self, review_id):
+        review = Reviews.query.get(review_id)
+        if not review:
+            return {"msg": "Review not found"}, 404
+        data = request.get_json()
+        review.content = data['comment']
+        db.session.commit()
+        return review.to_dict(), 200
+    @jwt_required()
+    def delete(self, review_id):
+        review = Reviews.query.get(review_id)
+        if not review:
+            return {"msg": "Review not found"}, 404
+        db.session.delete(review)
+        db.session.commit()
+        return {}, 204
+class RatingResource(Resource):
+    @jwt_required()
+    def post(self):
+        user_id = get_jwt_identity()
+        data = request.get_json()
+        new_rating = Rating(score=data['rating'], recipe_id=data['recipe_id'])
+        db.session.add(new_rating)
+        db.session.commit()
+        return new_rating.to_dict(), 201
+
+    @jwt_required()
+    def get(self, rating_id):
+        rating = Rating.query.get(rating_id)
+        if rating:
+            return rating.to_dict(), 200
+        return {"msg": "Rating not found"}, 404
+
+    @jwt_required()
+    def put(self, rating_id):
+        rating = Rating.query.get(rating_id)
+        if not rating:
+            return {"msg": "Rating not found"}, 404
+        data = request.get_json()
+        rating.score = data['rating']
+        db.session.commit()
+        return rating.to_dict(), 200
+
+    @jwt_required()
+    def delete(self, rating_id):
+        rating = Rating.query.get(rating_id)
+        if not rating:
+            return {"msg": "Rating not found"}, 404
+        db.session.delete(rating)
+        db.session.commit()
+        return {}, 204
+
 class CheckSession(Resource):
      @jwt_required()
      def get(self):
@@ -89,8 +148,9 @@ class CheckSession(Resource):
 
 #authenticate_api.add_resource(Signup, '/sign', endpoint='signup')
 #authenticate_api.add_resource(Login, '/login')
-
+#authenticate_api.add_resource(ReviewResource, '/reviews', '/reviews/<int:review_id>')
 #authenticate_api.add_resource(Logout, '/logout')
 #authenticate_api.add_resource(CheckSession, '/check_session')
+#authenticate_api.add_resource(RatingResource, '/ratings', '/ratings/<int:rating_id>')
 
 

@@ -25,33 +25,31 @@ const Home = () => {
             Tasty Tales is a Recipe Management Platform dedicated to exploring culinary experiences and sharing stories behind delicious recipes. Through engaging content and informative resources, Tasty Tales connects food enthusiasts with diverse cuisines, cooking techniques, and the rich cultural narratives that make every dish unique. Whether you're a seasoned chef or an aspiring home cook, Tasty Tales invites you to discover new flavors, learn from culinary experts, and embark on a flavorful journey of exploration and inspiration.
           </p>
         </Col>
-        </Row>
+      </Row>
 
-{/* Logo */}
-<Row className="mt-4 justify-content-center align-items-center" style={{ minHeight: '300px' }}>
-  <Col xs="auto" className="text-center">
-    <div className="rounded-circle" style={{ backgroundColor: 'yellowgreen', width: '200px', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <h2 className="text-black text-center mb-0">
-        WELCOME!
-      </h2>
-    </div>
-  </Col>
-</Row>
+      {/* Logo */}
+      <Row className="mt-4 justify-content-center align-items-center" style={{ minHeight: '300px' }}>
+        <Col xs="auto" className="text-center">
+          <div className="rounded-circle" style={{ backgroundColor: 'yellowgreen', width: '200px', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <h2 className="text-black text-center mb-0">
+              WELCOME!
+            </h2>
+          </div>
+        </Col>
+      </Row>
 
-
-
-      {/* About Us and Contact Us Cards */}
+      {/* View Recipes and Contact Us Cards */}
       <Row className="mt-4 justify-content-center">
-        {/* About Us Card */}
+        {/* View Recipes Card */}
         <Col md="6">
           <Card>
             <Card.Body>
-              <Card.Title>About Us</Card.Title>
+              <Card.Title>View Recipes</Card.Title>
               <Card.Text>
-                Learn more about our hotel and our services.
+                Explore our collection of mouth-watering recipes.
               </Card.Text>
               <Link to="/recipes">
-                <Button variant="info">About Us</Button>
+                <Button variant="info">View Recipes</Button>
               </Link>
             </Card.Body>
           </Card>
@@ -93,7 +91,6 @@ const Home = () => {
           </Link>
         </Col>
       </Row>
-
 
     </Container>
   );

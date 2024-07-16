@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const RecipeCard = ({ recipe }) => {
-    const { id, title, description, ingredients, instructions, imgUrl } = recipe;
+    const { id, title, description, ingredients, instructions, imgUrl, author } = recipe;
 
     // Placeholder image URL
     const placeholderImageUrl = 'https://via.placeholder.com/400x250.png?text=Recipe+Image';
@@ -27,6 +27,7 @@ const RecipeCard = ({ recipe }) => {
                 <h5 className="card-title">{title}</h5>
                 {!expanded && (
                     <div>
+                        <p>By: {author}</p>
                         <p className="card-text">{description}</p>
                         <button className="btn btn-link" onClick={toggleExpanded}>
                             Expand

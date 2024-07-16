@@ -5,7 +5,7 @@ import requests
 
 # Local imports
 from config import db, api
-from models import Recipe, User, Tag
+from models import Recipe, User, Tag, Review
 
 recipe_bp = Blueprint('recipe_bp', __name__)
 
@@ -48,7 +48,7 @@ def get_recipes():
 @recipe_bp.route('/recipes/<int:recipe_id>', methods=['GET'])
 def get_recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
-    
+    comments = Review.query.filter_by(recipe_id=recipe.id).all()
     # Serialize the recipe data
     recipe_data = {
         'id': recipe.id,
@@ -58,7 +58,9 @@ def get_recipe(recipe_id):
         'ingredients': recipe.ingredients,
         'instructions': recipe.instructions,
         'author': recipe.author.username,
-        'tags': [tag.name for tag in recipe.tags]
+        'ratings': recipe.average_rating,
+        'tags': [tag.name for tag in recipe.tags], 
+        'comments': [comment.to_dict() for comment in comments]
     }
 
     return jsonify(recipe_data), 200

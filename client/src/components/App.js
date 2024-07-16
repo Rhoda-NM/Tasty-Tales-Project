@@ -13,6 +13,7 @@ import SignUp from './USER/signup'; // Assuming you have a Signup component
 import Recipes from "./RECIPES/recipes";
 import AddRecipeForm from './RECIPES/recipeform';
 import Review from './RECIPES/review';
+import RecipeDetail from './RECIPES/recipeDetail';
 
 const ProtectedRoute = ({ component: Component }) => {
   const { user, loading } = useAuth();
@@ -38,6 +39,7 @@ function App() {
               <Route exact path="/recipes"  element={<Recipes />} />
               <Route exact path="/recipeform" element={<AddRecipeForm />} />
               <Route exact path="/review" element={<Review />} />
+              <Route path="/recipes/:id" element={<RecipeDetail />} />
             </Routes>
           </div>
         </div>

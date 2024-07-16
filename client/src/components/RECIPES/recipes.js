@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import RecipeCard from './recipeCard';
 import NavBar from '../navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -52,9 +53,11 @@ const Recipes = () => {
                         ) : (
                             recipes.map((recipe, index) => (
                                 <div key={recipe.id} className="col-10 col-md-6 col-lg-4 mb-4 d-flex align-items-stretch">
-                                    <div className="card" style={{ backgroundColor: cardColors[index % cardColors.length], padding: '10px', borderRadius: '10px', height: '100%' }}>
-                                        <RecipeCard recipe={recipe} />
-                                    </div>
+                                    <Link to={`/recipes/${recipe.id}`}>
+                                        <div className="card" style={{ backgroundColor: cardColors[index % cardColors.length], padding: '10px', borderRadius: '10px', height: '100%' }}>
+                                            <RecipeCard recipe={recipe} />
+                                        </div>
+                                    </Link>
                                 </div>
                             ))
                         )}

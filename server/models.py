@@ -73,6 +73,7 @@ class Recipe(db.Model, SerializerMixin):
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'comments'
 
+    serialize_only = ("id", "author.username", "content", "user_id", "recipe_id")
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String, nullable=False)
 

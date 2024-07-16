@@ -1,103 +1,147 @@
-import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React from 'react';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { useAuth } from '../AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import Login from '../USER/login';
 
-const AddRecipeForm = () => {
-    const { user } = useAuth();
-    const navigate = useNavigate();
+const RecipeForm = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-    const initialValues = {
-        title: '',
-        description: '',
-        ingredients: '',
-        instructions: '',
-        tags: ''
-    };
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      imgUrl: '',
+      description: '',
+      ingredients: '',
+      instructions: '',
+      tags: '',
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required('Title is required'),
+      imgUrl: Yup.string().url('Invalid URL'),
+      description: Yup.string().required('Description is required'),
+      ingredients: Yup.string().required('Ingredients are required'),
+      instructions: Yup.string().required('Instructions are required'),
+      tags: Yup.string(),
+    }),
+    onSubmit: async (values) => {
+      if (!user) {
+        navigate('/login');
+        return;
+      }
 
-    const validationSchema = Yup.object({
-        title: Yup.string().required('Title is required'),
-        description: Yup.string().required('Description is required'),
-        ingredients: Yup.string().required('Ingredients are required'),
-        instructions: Yup.string().required('Instructions are required'),
-        tags: Yup.string().required('Tags are required')
-    });
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/recipes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(values),
+      });
 
-    const handleSubmit = (values, { setSubmitting }) => {
-        const formattedRecipe = {
-            ...values,
-            tags: values.tags.split(',').map(item => item.trim())
-        };
+      if (response.ok) {
+        const data = await response.json();
+        navigate(`/recipes/${data.id}`);
+      } else {
+        console.error('Failed to add recipe');
+      }
+    },
+  });
 
-        axios.post('/api/recipes', formattedRecipe)
-            .then(response => {
-                alert('Recipe added successfully!');
-                // Optionally, redirect to another page after successful submission
-                navigate('/recipes');
-            })
-            .catch(error => {
-                console.error('There was an error adding the recipe!', error);
-            })
-            .finally(() => {
-                setSubmitting(false);
-            });
-    };
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <div>
+        <label htmlFor="title">Title</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.title}
+        />
+        {formik.touched.title && formik.errors.title ? (
+          <div>{formik.errors.title}</div>
+        ) : null}
+      </div>
 
-    if (!user) {
-        return (
-            <>
-                <h3>You need to login to add a recipe</h3>
-                <Login />
-            </>
-        );
-    }
+      <div>
+        <label htmlFor="imgUrl">Image URL</label>
+        <input
+          type="text"
+          id="imgUrl"
+          name="imgUrl"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.imgUrl}
+        />
+        {formik.touched.imgUrl && formik.errors.imgUrl ? (
+          <div>{formik.errors.imgUrl}</div>
+        ) : null}
+      </div>
 
-    return (
-        <div>
-            <h1 className="text-center mb-4" style={{ fontFamily: 'Arial, sans-serif', fontSize: '2.5rem', color: '#333' }}>Add a Recipe</h1>
-            <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-            >
-                {formik => (
-                    <Form>
-                        <div>
-                            <h3 style={{ textAlign: 'center' }}>Recipe Form</h3>
-                        </div>
-                        <div style={{ gap: '10px', paddingTop: '20px', width: '100%', padding: '30px', backgroundColor: 'rgba(123, 106, 106, 0.4)', borderRadius: '20px' }}>
-                            <h6>Title:</h6>
-                            <Field type="text" name="title" placeholder="Title" className="form-control" />
-                            <ErrorMessage name="title" component="div" className="error-message" />
+      <div>
+        <label htmlFor="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.description}
+        />
+        {formik.touched.description && formik.errors.description ? (
+          <div>{formik.errors.description}</div>
+        ) : null}
+      </div>
 
-                            <h6>Description:</h6>
-                            <Field as="textarea" name="description" placeholder="Description" className="form-control" />
-                            <ErrorMessage name="description" component="div" className="error-message" />
+      <div>
+        <label htmlFor="ingredients">Ingredients</label>
+        <textarea
+          id="ingredients"
+          name="ingredients"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.ingredients}
+        />
+        {formik.touched.ingredients && formik.errors.ingredients ? (
+          <div>{formik.errors.ingredients}</div>
+        ) : null}
+      </div>
 
-                            <h6>Ingredients:</h6>
-                            <Field as="textarea" name="ingredients" placeholder="Ingredients" className="form-control" />
-                            <ErrorMessage name="ingredients" component="div" className="error-message" />
+      <div>
+        <label htmlFor="instructions">Instructions</label>
+        <textarea
+          id="instructions"
+          name="instructions"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.instructions}
+        />
+        {formik.touched.instructions && formik.errors.instructions ? (
+          <div>{formik.errors.instructions}</div>
+        ) : null}
+      </div>
 
-                            <h6>Instructions:</h6>
-                            <Field as="textarea" name="instructions" placeholder="Instructions" className="form-control" />
-                            <ErrorMessage name="instructions" component="div" className="error-message" />
+      <div>
+        <label htmlFor="tags">Tags (comma-separated)</label>
+        <input
+          type="text"
+          id="tags"
+          name="tags"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.tags}
+        />
+        {formik.touched.tags && formik.errors.tags ? (
+          <div>{formik.errors.tags}</div>
+        ) : null}
+      </div>
 
-                            <h6>Tags:</h6>
-                            <Field type="text" name="tags" placeholder="Tags (comma-separated)" className="form-control" />
-                            <ErrorMessage name="tags" component="div" className="error-message" />
-
-                            <div style={{ alignContent: 'center', width: '90px', height: '30px' }}>
-                                <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>Add</button>
-                            </div>
-                        </div>
-                    </Form>
-                )}
-            </Formik>
-        </div>
-    );
+      <button type="submit">Add Recipe</button>
+    </form>
+  );
 };
 
-export default AddRecipeForm;
+export default RecipeForm;

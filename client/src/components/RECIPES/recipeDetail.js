@@ -9,7 +9,8 @@ const RecipeDetail = () => {
   const [recipe, setRecipe] = useState(null);
   const [error, setError] = useState(null);
   const [commentContent, setCommentContent] = useState('');
-  const [ratingScore, setRatingScore] = useState(1);
+  const [rating, setRating] = useState(0)
+ 
  
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -31,14 +32,31 @@ const RecipeDetail = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`/recipe/recipes/${id}/comments`, { content: commentContent }, {
+      await axios.post(`/api/recipes/${id}/comments`, { content: commentContent }, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
       setCommentContent('');
       // Fetch updated recipe data to display new comment
-      const response = await axios.get(`/recipe/recipes/${id}`);
+      const response = await axios.get(`/api/recipes/${id}`);
+      setRecipe(response.data);
+    } catch (err) {
+      setError(err);
+    }
+  };
+ 
+  const handleStarClick = async (starRating) => {
+    setRating(starRating)
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(`/api/recipes/${id}/ratings`, { score: rating }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      // Fetch updated recipe data to display new rating
+      const response = await axios.get(`/api/recipes/${id}`);
       setRecipe(response.data);
     } catch (err) {
       setError(err);
@@ -106,6 +124,17 @@ const RecipeDetail = () => {
         ) : (
           <p>No ratings yet.</p>
         )}
+        <div className="text-center mb-4">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  style={{ fontSize: '30px', cursor: 'pointer', color: star <= rating ? '#ffd700' : '#6c757d' }}
+                  onClick={() => handleStarClick(star)}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
       </div>
       <Footer />
     </>

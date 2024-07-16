@@ -5,7 +5,7 @@ import requests
 
 # Local imports
 from config import db, api
-from models import Recipe, User, Tag, Review
+from models import Recipe, User, Tag, Review, Rating, RecipeTag
 
 recipe_bp = Blueprint('recipe_bp', __name__)
 
@@ -65,7 +65,7 @@ def get_recipe(recipe_id):
 
     return jsonify(recipe_data), 200
 
-@recipe_bp.route('/fetch_and_save/<meal_id>', methods=['GET'])
+#@recipe_bp.route('/fetch_and_save/<meal_id>', methods=['GET'])
 def fetch_and_save(meal_id):
     # Fetch data from the external API
     url = f'https://www.themealdb.com/api/json/v1/1/lookup.php?i={meal_id}'
@@ -117,37 +117,86 @@ def fetch_and_save(meal_id):
 
     return jsonify(new_recipe.to_dict()), 201
 
+# Add a comment to a recipe
+@recipe_bp.route('/recipes/<int:id>/comments', methods=['POST'])
+@jwt_required()
+def add_comment(id):
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+    content = data.get('content')
 
-@recipe_bp.route('/addrecipes', methods=['POST'])
+    if not content:
+        return jsonify({'error': 'Content is required'}), 400
+
+    new_comment = Review(
+        content=content,
+        user_id=current_user_id,
+        recipe_id=id
+    )
+
+    db.session.add(new_comment)
+    db.session.commit()
+
+    return jsonify(new_comment.to_dict()), 201
+
+
+# Add a rating to the recipe
+@recipe_bp.route('/recipes/<int:id>/ratings', methods=['POST'])
+@jwt_required()
+def add_rating(id):
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+    score = data.get('score')
+
+    new_rating = Rating(
+        score=score,
+        user_id=current_user_id,
+        recipe_id=id
+    )
+
+    db.session.add(new_rating)
+    db.session.commit()
+
+    return jsonify(new_rating.to_dict()), 201
+
+@recipe_bp.route('/recipes', methods=['POST'])
 @jwt_required()
 def add_recipe():
     current_user_id = get_jwt_identity()
+    
     data = request.get_json()
-    print("Received data:", data)
-
     title = data.get('title')
+    imgUrl = data.get('imgUrl')
     description = data.get('description')
     ingredients = data.get('ingredients')
-    instructions = data.get('steps')
+    instructions = data.get('instructions')
+    tags = data.get('tags', '')
 
     if not (title and description and ingredients and instructions):
         return jsonify({'error': 'All fields are required'}), 400
 
-    try:
-        new_recipe = Recipe(
-            title=title,
-            description=description,
-            ingredients=ingredients,
-            instructions=instructions,
-            user_id=current_user_id
-        )
+    new_recipe = Recipe(
+        title=title,
+        description=description,
+        ingredients=ingredients,
+        instructions=instructions,
+        user_id=current_user_id,
+        imgUrl=imgUrl
+    )
 
-        db.session.add(new_recipe)
-        db.session.commit()
-        return jsonify(new_recipe.to_dict()), 201
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+    # Handle tags
+    if tags:
+        tag_list = tags.split(',')
+        for tag_name in tag_list:
+            tag = get_or_create_tag(tag_name.strip())
+            new_recipe.tags.append(tag)
+    
+    db.session.add(new_recipe)
+    db.session.commit()
+
+    return jsonify(new_recipe.to_dict()), 201
+
+
 
 
 """@jwt_required()

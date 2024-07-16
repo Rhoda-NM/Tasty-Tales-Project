@@ -11,7 +11,7 @@ import SignUp from './USER/signup'; // Assuming you have a Signup component
 //import RecipeCards from './recipeCard'; // Import the RecipeCards component
 //import { Switch, Route } from "react-router-dom";
 import Recipes from "./RECIPES/recipes";
-import AddRecipeForm from './RECIPES/recipeform';
+import RecipeForm from './RECIPES/recipeform';
 import Review from './RECIPES/review';
 import RecipeDetail from './RECIPES/recipeDetail';
 
@@ -37,7 +37,7 @@ function App() {
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<SignUp />} />
               <Route exact path="/recipes"  element={<Recipes />} />
-              <Route exact path="/recipeform" element={<AddRecipeForm />} />
+              <Route exact path="/recipeform" element={<RecipeForm />} />
               <Route exact path="/review" element={<Review />} />
               <Route path="/recipes/:id" element={<RecipeDetail />} />
             </Routes>

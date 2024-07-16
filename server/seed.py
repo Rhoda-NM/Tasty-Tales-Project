@@ -10,6 +10,7 @@ from faker import Faker
 from app import app
 from models import db
 from models import User, Recipe, Rating, Review, RecipeTag, Tag
+from recipe import fetch_and_save
 
 recipes = [
     {
@@ -217,6 +218,18 @@ with app.app_context():
     db.session.commit()
     print('Database seeded with example users!')
     
+    meal_ids = ["52819","52783", "52780", "52772", "53046", "52882", "53019", "52773" , "52774", "52775", "52776", "53020", "53021",
+                "53045", "53047", "52934", "52935", "52936", "52877", "52875", "52876", "52878", "52879", "52880", 
+                "52788", "52789", "52790", "52781", "52782", "52781", "52784", "52781", "52785", "52787", "52786",
+                "52909", "52910", "52911", "52912", "52913", "52915", "52819", "52820", "52815", "52816", "52817", "52818",
+                "52920", "52921", "52922", "52923", "52924", "52925", "52926"]  # Add your meal IDs here
+
+    for meal_id in meal_ids:
+        result, status = fetch_and_save(meal_id)
+        if status == 201:
+            print(f'Successfully added recipe with meal ID: {meal_id}')
+        else:
+            print(f'Failed to add recipe with meal ID: {meal_id}.')
     """tag_objects = {}
     for recipe_data in recipes:
         for tag_name in recipe_data['tags']:

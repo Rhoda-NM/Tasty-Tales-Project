@@ -14,6 +14,7 @@ class User(db.Model, SerializerMixin):
 
     recipes = db.relationship('Recipe', back_populates='author')
     reviews = db.relationship('Review', back_populates='author')
+    ratings = db.relationship('Rating', back_populates='user')
     
     def set_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password).decode('utf8')
@@ -87,6 +88,8 @@ class Rating(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer, nullable=False)
 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='ratings')
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
     recipe = db.relationship('Recipe', back_populates='ratings')
 class Tag(db.Model, SerializerMixin):

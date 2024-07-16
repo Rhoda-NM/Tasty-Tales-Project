@@ -31,6 +31,7 @@ def signup():
         username = request.get_json()['userName']
         email = request.get_json()['email']
         password = request.get_json()['password']
+        password=request.get_json()['password']
 
         if username and email and password:
             if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():

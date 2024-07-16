@@ -42,7 +42,7 @@ def get_recipes():
         }
         recipes_data.append(recipe_data)
 
-    print(recipes_data)
+    #print(recipes_data)
     return jsonify(recipes_data), 200
 
 @recipe_bp.route('/recipes/<int:recipe_id>', methods=['GET'])

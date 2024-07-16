@@ -1,105 +1,95 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Navbar from './navbar';
+import Footer from './footer';
 
 const Home = () => {
+  const placeholderImageUrl = 'https://via.placeholder.com/400x250.png?text=Recipe+Image';
+  const img1 = "https://www.themealdb.com/images/media/meals/vdwloy1713225718.jpg"
+  const img2 = "https://www.themealdb.com/images/media/meals/urzj1d1587670726.jpg"
+  const img3 = "https://www.themealdb.com/images/media/meals/0206h11699013358.jpg"
+  const img4 = "https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg"
+
+
   return (
-    <Container className="mt-4">
-      <Row>
-        <Navbar />
-      </Row>
-      {/* Title Card */}
-      <Row className="justify-content-center">
-        <Col>
-          <Card bg="secondary" text="white">
-            <Card.Body className="text-center">
-              <Card.Title className="display-4 fw-bold" style={{ color: 'purple' }}>
-                Tasty Tales
-              </Card.Title>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Description */}
-      <Row className="mt-4 justify-content-center">
-        <Col className="text-center">
-          <p>
-            Tasty Tales is a Recipe Management Platform dedicated to exploring culinary experiences and sharing stories behind delicious recipes. Through engaging content and informative resources, Tasty Tales connects food enthusiasts with diverse cuisines, cooking techniques, and the rich cultural narratives that make every dish unique. Whether you're a seasoned chef or an aspiring home cook, Tasty Tales invites you to discover new flavors, learn from culinary experts, and embark on a flavorful journey of exploration and inspiration.
-          </p>
-        </Col>
-        </Row>
-
-{/* Logo */}
-<Row className="mt-4 justify-content-center align-items-center" style={{ minHeight: '300px' }}>
-  <Col xs="auto" className="text-center">
-    <div className="rounded-circle" style={{ backgroundColor: 'yellowgreen', width: '200px', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <h2 className="text-black text-center mb-0">
-        WELCOME!
-      </h2>
-    </div>
-  </Col>
-</Row>
-
-
-
-      {/* About Us and Contact Us Cards */}
-      <Row className="mt-4 justify-content-center">
-        {/* About Us Card */}
-        <Col md="6">
-          <Card>
-            <Card.Body>
-              <Card.Title>About Us</Card.Title>
-              <Card.Text>
-                Learn more about our hotel and our services.
-              </Card.Text>
-              <Link to="/recipes">
-                <Button variant="info">About Us</Button>
-              </Link>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        {/* Contact Us Card */}
-        <Col md="6">
-          <Card>
-            <Card.Body>
-              <Card.Title>Contact Us</Card.Title>
-              <Card.Text>
-                Contact us for inquiries or give feedback.
-              </Card.Text>
-              <Link to="/contact">
-                <Button variant="info">Contact Us</Button>
-              </Link>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Login and Signup Buttons */}
-      <Row className="mt-4 justify-content-center">
-        <Col md="6" className="text-center">
-          <Link to="/login">
-            <Button variant="primary">Login</Button>
-          </Link>
-        </Col>
-        <Col md="6" className="text-center">
-          <Link to="/signup">
-            <Button variant="success">Signup</Button>
-          </Link>
-        </Col>
-      </Row>
-      <Row className="mt-4 justify-content-center">
-        <Col md="6" className='text-center'>
-          <Link to="/recipeform">
-            <Button>Add Recipe</Button>
-          </Link>
-        </Col>
-      </Row>
-
-
-    </Container>
+    <>
+      <Navbar />
+      <Container className="mt-4">
+        <div className='row justify content-center'>
+        <div className="col-4 card mb-4">
+            {/* Display the image if available, otherwise show placeholder */}
+            {img1 ? (
+                <img src={img1} className="card-img-top" alt="img" />
+            ) : (
+                <img src={placeholderImageUrl} style={{width: 40, height: 30}} className="card-img-top" alt="img" />
+            )}
+            <div className="card-body">
+                <h5 className="card-title">Summer Recipes</h5>
+            </div>
+          </div>
+          <div className="col-4 card mb-4">
+            {/* Display the image if available, otherwise show placeholder */}
+            {img3 ? (
+                <img src={img3} className="card-img-top" alt="img" />
+            ) : (
+                <img src={placeholderImageUrl} style={{width: 40, height: 30}} className="card-img-top" alt="img" />
+            )}
+            <div className="card-body">
+                <h5 className="card-title">Tasty Breakfast</h5>
+            </div>
+          </div>
+          <div className="col-4 card mb-4">
+            {/* Display the image if available, otherwise show placeholder */}
+            {img4 ? (
+                <img src={img4} className="card-img-top" alt="img" />
+            ) : (
+                <img src={placeholderImageUrl} style={{width: 40, height: 30}} className="card-img-top" alt="img" />
+            )}
+            <div className="card-body">
+                <h5 className="card-title">Hearty Meals</h5>
+            </div>
+          </div>
+        </div>
+        <div className='row justify-content' style={{background: "#eeeeea"}}>
+          <div className='col-6'>
+    
+            <Card  text="white">
+              <Row className="mt-4 justify-content-center align-items-center" style={{ minHeight: '300px' }}>
+                    <Col xs="auto" className="text-center">
+                      <div className="rounded-circle" style={{ backgroundColor: 'yellowgreen', width: '200px', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <h2 className="text-black text-center mb-0">
+                          WELCOME!
+                        </h2>
+                      </div>
+                    </Col>
+                  </Row>
+                <Card.Body className="text-center">
+                  <Card.Title className="display-4 fw-bold" style={{ color: '#3e8484' }}>
+                    Tasty Tales
+                  </Card.Title>
+                </Card.Body>      {/* Logo */}
+    
+              </Card>
+            </div>
+            <div className='col-6'>
+              <h3>About Us</h3>
+              <p>Explore diverse cuisine, cooking techniques and connect with other food enthusiasts
+                <br/>Whether you are a seasoned chef or an aspiring home cook discover new flavors, 
+                learn from culinary experts and embark on a flavorful journey.
+                <br />
+                <span style={{padding: 20, color: '#3e8484'}}>Tasty Tales is a recipe platform dedicated to providing unique culinary experiences</span>
+              </p>
+          </div>
+        </div>
+        <div className='row justify-content'>
+          <h2>Explore Our Recipes</h2>
+          <div></div>
+        </div>
+      </Container>
+      <Footer />
+    </>
   );
 };
 

@@ -1,40 +1,50 @@
-import React from 'react';
-// import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-// import SearchBar from './SearchBar';
+import { Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import "./app.css";
 
-const Navbar= () => {
+function NavBar() {
+  //const { currentUser } = useContext(UserContext);
+  const img4 = "https://www.themealdb.com/images/media/meals/zadvgb1699012544.jpg"
   return (
-    
-       <nav class="navbar navbar-expand-sm bg-body-tertiary" style={{height:'80px', width:'100%', background:'gray'}}>
-             <div class="container-fluid">
-                   <h1 class="navbar-brand">Recipe</h1>
-                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                     <span class="navbar-toggler-icon"></span>
-                   </button>
-                   <div class="collapse navbar-collapse" id="navbarScroll" style={{display:'flex', paddingLeft:'50px'}}>
-                        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style={{height:" 100px;"}}>
-                           <li class="nav-item">
-                             <Link class="nav-link active" aria-current="page" to={'/'}>Home</Link>
-                           </li>
-                           <li class="nav-item">
-                             <Link class="nav-link active" aria-current="page" to={'/recipes'}>Recipes</Link>
-                           </li>
-                           <li class="nav-item">
-                             <Link class="nav-link active" aria-current="page" to={'/recipeform'}>AddRecipe</Link>
-                           </li>
-                           <li class="nav-item">
-                             <Link class="nav-link active" aria-current="page" to={'/about'}>About</Link>
-                           </li>
-                          
-                         </ul>
-                         
-                    </div>
-                    {/* <SearchBar /> */}
-              </div>
-        </nav>   
-    
+    <>
+      <nav className="navbar">
+        <div className="container-fluid title">
+          <div style={{display: 'flex'}}>
+            <img src={img4} width={"60px"} />
+            <h1 style={{padding: 12}}>tasty<span>TALES</span></h1>
+          </div>
+          
+          <div>
+            <div className="user">
+             <FontAwesomeIcon icon={faUser} />
+             <h3><Link to="/login" className="nav-link active">
+                  Sign In
+                </Link>|
+                <Link to="/signup" className="nav-link active">
+                  Register
+                </Link>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div className="nav">
+      <div class="navbar-container">
+            <ul class="nav-links">
+                <li><Link to="/" className="nav-link active">Home</Link></li>
+                <li><Link to="/recipes" className="nav-link active">Recipes</Link></li>
+                <li><Link to="/" className="nav-link active">Collections</Link></li>
+                <li><Link to="/recipeform" className="nav-link active">Add Recipe</Link></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" placeholder="Search..." />
+                <button type="submit">Search</button>
+            </div>
+        </div>
+      </div>
+    </>
   );
-};
-
-export default Navbar;
+}
+export default NavBar;

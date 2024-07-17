@@ -82,6 +82,8 @@ class Review(db.Model, SerializerMixin):
     recipe = db.relationship('Recipe', back_populates='reviews')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     author = db.relationship('User', back_populates='reviews')
+
+    serialize_only = ('id', 'content', 'recipe_id', 'author.username')
 class Rating(db.Model, SerializerMixin):
     __tablename__ = 'ratings'
 
@@ -92,6 +94,8 @@ class Rating(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='ratings')
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
     recipe = db.relationship('Recipe', back_populates='ratings')
+
+    serialize_only = ('id', 'score', 'recipe_id')
 class Tag(db.Model, SerializerMixin):
     __tablename__ = 'tags'
 

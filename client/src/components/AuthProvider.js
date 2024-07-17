@@ -38,7 +38,8 @@ export const AuthProvider = ({ children }) => {
 
     if (response.ok) {
       const data = await response.json();
-      localStorage.setItem('token', data.token);
+      console.log(data.access_token);
+      localStorage.setItem('token', data.access_token);
       setUser(data.user);
       navigate('/');
     } else {

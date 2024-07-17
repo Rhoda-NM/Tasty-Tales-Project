@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from './AuthProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -7,6 +8,10 @@ import "./app.css";
 
 function NavBar() {
   const img4 = "https://www.themealdb.com/images/media/meals/zadvgb1699012544.jpg";
+
+  // Track user authentication state
+  const { user, logout } = useAuth();
+
 
   return (
     <>
@@ -44,11 +49,6 @@ function NavBar() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/" className="nav-link active">
-                  Collections
-                </Link>
-              </li>
-              <li className="nav-item">
                 <Link to="/recipeform" className="nav-link active">
                   Add Recipe
                 </Link>
@@ -56,15 +56,41 @@ function NavBar() {
             </ul>
             <div className="d-flex align-items-center">
               <div className="user">
-                <FontAwesomeIcon icon={faUser} />
+                
                 <h3>
-                  <Link to="/login" className="nav-link active">
-                    Sign In
-                  </Link>
-                  |
-                  <Link to="/signup" className="nav-link active">
-                    Register
-                  </Link>
+                  {user ? (
+                    // Show Logout button if authenticated
+                    <>
+                      <div class="input-group mb-3">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="true"><FontAwesomeIcon icon={faUser} /> </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <Link className="dropdown-item" to="/user/profile">View Profile</Link>
+                          </li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li>
+                            <Link className="dropdown-item" to="/user/profile">My Recipes</Link>
+                          </li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li>
+                            <Link className="dropdown-item" to="/user/profile">Sign Out</Link>
+                          </li>
+                          <li><hr class="dropdown-divider" /></li>
+                        </ul>
+                      </div>
+                    </>
+                  ) : (
+                    // Show Login button if not authenticated
+                    <>
+                      <Link to="/login" className="nav-link active">
+                        Sign In
+                      </Link>
+                      |
+                      <Link to="/signup" className="nav-link active">
+                        Register
+                      </Link>
+                    </>
+                  )}
                 </h3>
               </div>
               <div className="search-bar ms-3">

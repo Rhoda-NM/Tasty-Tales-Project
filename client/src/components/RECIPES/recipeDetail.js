@@ -32,15 +32,20 @@ const RecipeDetail = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`/api/recipes/${id}/comments`, { content: commentContent }, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+      const response = await axios.post(`/api/recipes/${id}/comments`,
+         { content: commentContent }, 
+         {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
       });
+      console.log('Comment added:', response.data);
       setCommentContent('');
       // Fetch updated recipe data to display new comment
-      const response = await axios.get(`/api/recipes/${id}`);
-      setRecipe(response.data);
+      const updatedRecipe = await axios.get(`/api/recipes/${id}`);
+      console.log(updatedRecipe)
+      setRecipe(updatedRecipe.data);
     } catch (err) {
       setError(err);
     }
@@ -50,14 +55,17 @@ const RecipeDetail = () => {
     setRating(starRating)
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`/api/recipes/${id}/ratings`, { score: rating }, {
+      const response = await axios.post(`/api/recipes/${id}/ratings`, { score: rating }, {
         headers: {
           'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
+      console.log('Rating added', response.data)
       // Fetch updated recipe data to display new rating
-      const response = await axios.get(`/api/recipes/${id}`);
-      setRecipe(response.data);
+      const updatedRecipe = await axios.get(`/api/recipes/${id}`);
+      console.log(updatedRecipe);
+      setRecipe(updatedRecipe.data);
     } catch (err) {
       setError(err);
     }
@@ -77,6 +85,21 @@ const RecipeDetail = () => {
           ))}
         </ul>
         <p>{recipe.description}</p>
+        <h3>Ratings</h3>
+        {recipe.ratings> 0 ? (
+          <div className="text-center mb-4">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <span
+              key={star}
+              style={{ fontSize: '30px', cursor: 'pointer', color: star <= recipe.ratings ? '#ffd700' : '#6c757d' }} 
+            >
+              ★
+            </span>
+          ))}
+          </div>
+        ) : (
+          <p>No ratings yet.</p>
+        )}
         <h3>Ingredients</h3>
         <ul>
           {recipe.ingredients.split('\n').map((ingredient, index) => (
@@ -90,12 +113,24 @@ const RecipeDetail = () => {
           ))}
         </ul>
 
+        <h3>Rate the recipe</h3>
+        <div className="text-center mb-4">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  style={{ fontSize: '30px', cursor: 'pointer', color: star <= rating ? '#ffd700' : '#6c757d' }}
+                  onClick={() => handleStarClick(star)}
+                >
+                  ★
+                </span>
+              ))}
+          </div>
         <h3>Comments</h3>
         {recipe.comments.length > 0 ? (
           <ul>
             {recipe.comments.map(comment => (
               <li key={comment.id}>
-                <strong>{comment.author}:</strong> {comment.content}
+                {comment.content}
               </li>
             ))}
           </ul>
@@ -112,29 +147,6 @@ const RecipeDetail = () => {
           <button type="submit">Submit Comment</button>
         </form>
 
-        <h3>Ratings</h3>
-        {recipe.ratings> 0 ? (
-          <ul>
-            {recipe.ratings.map(rating => (
-              <li key={rating.id}>
-                <strong>{rating.author}:</strong> {rating.score} / 5
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No ratings yet.</p>
-        )}
-        <div className="text-center mb-4">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span
-                  key={star}
-                  style={{ fontSize: '30px', cursor: 'pointer', color: star <= rating ? '#ffd700' : '#6c757d' }}
-                  onClick={() => handleStarClick(star)}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
       </div>
       <Footer />
     </>

@@ -60,7 +60,7 @@ def login():
     if user and user.check_password(password):
         session['user_id'] = user.id
         access_token = create_access_token(identity=user.id)
-
+        print(access_token)
         return {'user': user.to_dict(), 'access_token': access_token}, 200
     return {'error':'invalid username or password'},401
    

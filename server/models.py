@@ -23,13 +23,7 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(self.password_hash, password)
     
 
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'username': self.username,
-            'email': self.email,
-          
-        }
+    serialize_only = ('id', 'username', 'email')
     
 class Recipe(db.Model, SerializerMixin):
     __tablename__ = 'recipes'

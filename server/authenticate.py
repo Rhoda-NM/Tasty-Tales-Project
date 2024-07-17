@@ -69,15 +69,15 @@ class Logout(Resource):
            session['user_id'] = None
            return {},204
 
-class CheckSession(Resource):
-     @jwt_required()
-     def get(self):
-        user_id = get_jwt_identity()
-        user = User.query.get(user_id)
-        #user = User.query.filter_by(id=session.get('user_id')).first()
-        if user:
-            return user.to_dict(), 200
-        return {'error': 'User not logged in'}, 401
+@authenticate_bp.route('/userinfo', methods=['GET'])
+@jwt_required()
+def get_userProfile():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    #user = User.query.filter_by(id=session.get('user_id')).first()
+    if user:
+        return user.to_dict(), 200
+    return {'error': 'User not logged in'}, 401
 
 #authenticate_api.add_resource(Signup, '/sign', endpoint='signup')
 #authenticate_api.add_resource(Login, '/login')

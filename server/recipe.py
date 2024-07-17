@@ -1,6 +1,7 @@
 from flask import request, jsonify, Blueprint
 from  flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from sqlalchemy import or_
 import requests
 
 # Local imports
@@ -116,6 +117,24 @@ def fetch_and_save(meal_id):
     db.session.commit()
 
     return jsonify(new_recipe.to_dict()), 201
+
+# search for recipe
+@recipe_bp.route('/search', methods=['GET'])
+def search_recipes():
+    query = request.args.get('q')
+    print(query)
+    if not query:
+        return jsonify({'error': 'Query parameter is required'}), 400
+    
+    # Search recipes by title or ingredients, or tag name
+    results = Recipe.query.filter(
+        or_(
+            Recipe.title.ilike(f'%{query}%'),
+            Recipe.ingredients.ilike(f'%{query}%')
+        )
+    ).all()
+
+    return jsonify([recipe.to_dict() for recipe in results]), 200
 
 # Add a comment to a recipe
 @recipe_bp.route('/recipes/<int:id>/comments', methods=['POST'])

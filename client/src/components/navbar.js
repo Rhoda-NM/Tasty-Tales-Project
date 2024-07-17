@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from './AuthProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +11,13 @@ function NavBar() {
 
   // Track user authentication state
   const { user, logout } = useAuth();
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(`/search?query=${searchQuery}`);
+  };
 
 
   return (
@@ -65,7 +72,7 @@ function NavBar() {
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="true"><FontAwesomeIcon icon={faUser} /> </button>
                         <ul class="dropdown-menu">
                           <li>
-                            <Link className="dropdown-item" to="/user/profile">View Profile</Link>
+                            <Link className="dropdown-item" to="/UserProfile">View Profile</Link>
                           </li>
                           <li><hr class="dropdown-divider" /></li>
                           <li>
@@ -93,11 +100,19 @@ function NavBar() {
                   )}
                 </h3>
               </div>
-              <div className="search-bar ms-3">
-                <input type="text" className="form-control" placeholder="Search..." />
-                <button type="submit" className="btn btn-outline-light ms-2">
-                  Search
-                </button>
+              <div className="search-bar ms-3" >
+                <form onSubmit={handleSearch} className="d-flex" style={{display: "flex"}}>
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    placeholder="Search..." 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <button type="submit" className="btn btn-outline-light ms-2">
+                    Search
+                  </button>
+                </form>
               </div>
             </div>
           </div>

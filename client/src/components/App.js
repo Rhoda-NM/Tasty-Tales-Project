@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './AuthProvider'
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
@@ -19,6 +19,17 @@ import SearchResults from './RECIPES/SearchRecipe';
 
 const ProtectedRoute = ({ component: Component }) => {
   const { user, loading } = useAuth();
+  const [authState, setAuthState] = useState({
+    token: null,
+    isAuthenticated: false,
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setAuthState({ token, isAuthenticated: true });
+    }
+  });
 
   if (loading) {
     return <div>Loading...</div>;

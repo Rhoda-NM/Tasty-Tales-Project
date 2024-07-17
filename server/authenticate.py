@@ -64,10 +64,16 @@ def login():
         return {'user': user.to_dict(), 'access_token': access_token}, 200
     return {'error':'invalid username or password'},401
    
-class Logout(Resource):
-       def delete(self):
-           session['user_id'] = None
-           return {},204
+@authenticate_bp.route('/delete_user', methods=['DELETE'])
+@jwt_required()
+def delete_user():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"msg": "User deleted successfully"}), 200
+    return jsonify({"msg": "User not found"}), 404
 
 @authenticate_bp.route('/userinfo', methods=['GET'])
 @jwt_required()
@@ -78,11 +84,5 @@ def get_userProfile():
     if user:
         return user.to_dict(), 200
     return {'error': 'User not logged in'}, 401
-
-#authenticate_api.add_resource(Signup, '/sign', endpoint='signup')
-#authenticate_api.add_resource(Login, '/login')
-
-#authenticate_api.add_resource(Logout, '/logout')
-#authenticate_api.add_resource(CheckSession, '/check_session')
 
 

@@ -32,6 +32,7 @@ const RecipeDetail = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
+      if (!token) return <p> You need to login first</p>
       const response = await axios.post(`/api/recipes/${id}/comments`,
          { content: commentContent }, 
          {
@@ -52,10 +53,10 @@ const RecipeDetail = () => {
   };
  
   const handleStarClick = async (starRating) => {
-    setRating(starRating)
+    
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`/api/recipes/${id}/ratings`, { score: rating }, {
+      const response = await axios.post(`/api/recipes/${id}/ratings`, { score: starRating }, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -130,6 +131,7 @@ const RecipeDetail = () => {
           <ul>
             {recipe.comments.map(comment => (
               <li key={comment.id}>
+                <span>{comment.author.username}</span><br />
                 {comment.content}
               </li>
             ))}

@@ -50,6 +50,9 @@ def get_recipes():
 def get_recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     comments = Review.query.filter_by(recipe_id=recipe.id).all()
+    ratings = Rating.query.filter_by(recipe_id=recipe.id).all()
+    print(recipe.average_rating)
+   
     # Serialize the recipe data
     recipe_data = {
         'id': recipe.id,
@@ -216,52 +219,51 @@ def add_recipe():
     return jsonify(new_recipe.to_dict()), 201
 
 
+@recipe_bp.route('recipes/<int:id>', methods=['PUT'])
+@jwt_required()
+def update_recipe(id):
+    current_user = get_jwt_identity()
+    data = request.get_json()
+    title = data.get('title')
+    description = data.get('description')
+    instructions = data.get('instructions')
+    ingredients = data.get('ingredients')
+    imgurl = data.get('imgUrl')
 
-
-"""@jwt_required()
-class RecipeResource(Resource):
-    def get(self, id=None):
-        if id is None:
-            response = [recipe.to_dict() for recipe in Recipe.query.all()]
-            return jsonify(response), 200
-        else:
-            response = Recipe.query.get_or_404(id)
-            return jsonify(response.to_dict()), 200
+    recipe = Recipe.query.get(id)
+    if not recipe or recipe.user_id != current_user:
+        return jsonify({"msg": "Unauthorized"})
     
-    def post(self):
-        data = request.get_json()
-        if not data:
-            return {"message": "No input data provided"}, 400
-        recipe = Recipe(
-            title=data['title'],
-            description=data['description'],
-            ingredients=data['ingredients'],
-            instructions=data['instructions'],
-            user_id=data['user_id']
-        )
-        db.session.add(recipe)
-        db.session.commit()
-        return jsonify(recipe.to_dict()), 201
+    if title:
+        recipe.title = title
+    if description:
+        recipe.description = description
+    if ingredients:
+        recipe.ingredients = ingredients
+    if instructions:
+        recipe.instructions = instructions
+    if imgurl:
+        recipe.imgUrl = imgurl
 
-    def put(self, id=None):
-        recipe = Recipe.query.get_or_404(id)
-        data = request.get_json()
-        if not data:
-            return {"message": "No input data provided"}, 400
+    db.session.commit()
+    return jsonify({"msg": "Recipe updated successfully"}), 200
 
-        recipe.title = data.get('title', recipe.title)
-        recipe.description = data.get('description', recipe.description)
-        recipe.ingredients = data.get('ingredients', recipe.ingredients)
-        recipe.instructions = data.get('instructions', recipe.instructions)
-        recipe.user_id = data.get('user_id', recipe.user_id)
+@recipe_bp.route('recipes/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_recipe(id):
+    current_user = get_jwt_identity()
+    recipe = Recipe.query.get(id)
+    if not recipe or recipe.user_id != current_user:
+        return jsonify({"msg": "Unauthorized"}), 404
+    
+    db.session.delete(recipe)
+    db.session.commit()
 
-        db.session.commit()
-        return jsonify(recipe.to_dict()), 200
+    return jsonify({"msg": "Recipe deleted successfully"}), 200
 
-    def delete(self, id=None):
-        recipe = Recipe.query.get_or_404(id)
-        db.session.delete(recipe)
-        db.session.commit()
-        return {"message": "Recipe deleted"}, 204
-
-api.add_resource(RecipeResource, '/recipe', '/recipe/<int:id>')"""
+@recipe_bp.route('/user_recipes', methods=['GET'])
+@jwt_required()
+def get_user_recipes():
+    current_user_id = get_jwt_identity()
+    recipes = Recipe.query.filter_by(user_id=current_user_id).all()
+    return jsonify([recipe.to_dict() for recipe in recipes]), 200

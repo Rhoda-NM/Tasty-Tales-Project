@@ -40,8 +40,8 @@ class Recipe(db.Model, SerializerMixin):
     #relationships
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     author = db.relationship('User', back_populates='recipes')
-    ratings = db.relationship('Rating', back_populates='recipe')
-    reviews = db.relationship('Review', back_populates='recipe')
+    ratings = db.relationship('Rating', back_populates='recipe', cascade='all, delete-orphan')
+    reviews = db.relationship('Review', back_populates='recipe', cascade='all, delete-orphan')
     recipe_tags = db.relationship('RecipeTag', back_populates='recipe')
     # Association proxy to get tags for this recipe through recipetag
     tags = association_proxy('recipe_tags', 'tag',
@@ -72,9 +72,9 @@ class Review(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String, nullable=False)
 
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id', ondelete='CASCADE'))
     recipe = db.relationship('Recipe', back_populates='reviews')
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
     author = db.relationship('User', back_populates='reviews')
 
     serialize_only = ('id', 'content', 'recipe_id', 'author.username')
@@ -84,9 +84,9 @@ class Rating(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer, nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
     user = db.relationship('User', back_populates='ratings')
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id', ondelete='CASCADE'))
     recipe = db.relationship('Recipe', back_populates='ratings')
 
     serialize_only = ('id', 'score', 'recipe_id')

@@ -15,6 +15,9 @@ const UserProfile = () => {
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState(null);
   const [error, setError] = useState(null);
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -36,7 +39,7 @@ const UserProfile = () => {
     }
   }, [user]);
 
-  
+
   const handleLogout = async() => {
     try{
       await logout();
@@ -49,7 +52,7 @@ const UserProfile = () => {
   const handleDeleteUser = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.delete('/api/delete_user', {
+      const response = await axios.delete('/user/delete_user', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -60,6 +63,30 @@ const UserProfile = () => {
       }
     } catch (error) {
       console.error("Error deleting user:", error);
+    }
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await axios.put('/user/update_user', {
+        email,
+        username
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        setMessage('Profile updated successfully!');
+      }
+    } catch (error) {
+      setMessage('Error updating profile.');
+      console.error("Error updating profile:", error);
     }
   };
 
@@ -77,22 +104,33 @@ const UserProfile = () => {
             <h1>User: {userInfo.username}</h1>
             <p>Email: {userInfo.email}</p>
           </div>
-          <div className='row'>
-          <ul>
-            <li>
-              <Link className="dropdown-item" to="/UserProfile">Edit Profile</Link>
-            </li>
-            <li>
-              <Link className="dropdown-item" to="/user/profile">Saved Recipes</Link>
-            </li>
-            <li>
-              <Link className="dropdown-item" to="/user/profile">Own Recipes</Link>
-            </li>
-            <li>
-              <button onClick={handleLogout}>Sign Out</button>
-            </li>
-          </ul>
-          </div>
+          <div>
+      <h1>User Profile</h1>
+      <button onClick={handleLogout}>Logout</button>
+      <button onClick={handleDeleteUser}>Delete Account</button>
+
+      <h2>Update Profile</h2>
+      <form onSubmit={handleUpdate}>
+        <div>
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <button type="submit">Update</button>
+      </form>
+      {message && <p>{message}</p>}
+    </div>
         </div>
         
         {/* Add more user information as needed */}

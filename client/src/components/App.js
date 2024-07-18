@@ -16,6 +16,8 @@ import Review from './RECIPES/review';
 import RecipeDetail from './RECIPES/recipeDetail';
 import UserProfile from './USER/UserProfile';
 import SearchResults from './RECIPES/SearchRecipe';
+import MyRecipes from './RECIPES/userrecipe.js';
+import EditRecipes from './RECIPES/EditRecipe.js';
 
 const ProtectedRoute = ({ component: Component }) => {
   const { user, loading } = useAuth();
@@ -55,6 +57,8 @@ function App() {
               <Route path="/recipes/:id" element={<RecipeDetail />} />
               <Route path='/UserProfile' element={ <UserProfile />} />
               <Route path="/search" element={<SearchResults />} />
+              <Route path="/myRecipes" element={< MyRecipes />} />
+              <Route path="/editrecipe" element={<EditRecipes />} />
             </Routes>
           </div>
         </div>

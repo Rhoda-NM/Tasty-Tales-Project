@@ -76,7 +76,7 @@ function NavBar() {
                           </li>
                           <li><hr class="dropdown-divider" /></li>
                           <li>
-                            <Link className="dropdown-item" to="/user/profile">My Recipes</Link>
+                            <Link className="dropdown-item" to="/myRecipes">My Recipes</Link>
                           </li>
                           <li><hr class="dropdown-divider" /></li>
                           <li>

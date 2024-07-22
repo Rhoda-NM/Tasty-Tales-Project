@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import Navbar from './navbar';
 import Footer from './footer';
 
@@ -11,6 +10,7 @@ const Home = () => {
   const img3 = "https://www.themealdb.com/images/media/meals/0206h11699013358.jpg";
   const img4 = "https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg";
   const welcomeImageUrl = "https://images.pexels.com/photos/5898313/pexels-photo-5898313.jpeg?auto=compress&cs=tinysrgb&w=800";
+  const aboutUsBackgroundImage = "https://images.pexels.com/photos/158603/wheat-wheat-field-cereals-field-158603.jpeg?auto=compress&cs=tinysrgb&w=800";
 
   return (
     <>
@@ -18,7 +18,6 @@ const Home = () => {
       <Container className="mt-4">
         <Row className='justify-content-center'>
           <Col sm={4} className="card mb-4">
-            {/* Display the image if available, otherwise show placeholder */}
             {img1 ? (
               <img src={img1} className="card-img-top" alt="Summer Recipes" />
             ) : (
@@ -29,7 +28,6 @@ const Home = () => {
             </div>
           </Col>
           <Col sm={4} className="card mb-4">
-            {/* Display the image if available, otherwise show placeholder */}
             {img3 ? (
               <img src={img3} className="card-img-top" alt="Tasty Breakfast" />
             ) : (
@@ -40,7 +38,6 @@ const Home = () => {
             </div>
           </Col>
           <Col sm={4} className="card mb-4">
-            {/* Display the image if available, otherwise show placeholder */}
             {img4 ? (
               <img src={img4} className="card-img-top" alt="Hearty Meals" />
             ) : (
@@ -52,14 +49,22 @@ const Home = () => {
           </Col>
         </Row>
         <Row className='justify-content-center' style={{ background: "#eeeeea", padding: "20px 0" }}>
-          <Col sm={6} style={{ backgroundColor: '#f8f9fa', padding: '20px', borderRadius: '10px' }}>
+          <Col sm={6} style={{
+            backgroundImage: `url(${aboutUsBackgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            color: 'black',
+            fontWeight: 'bold',
+            padding: '20px',
+            borderRadius: '10px'
+          }}>
             <div>
               <h3>About Us</h3>
               <p className="lead">
                 Explore diverse cuisine, cooking techniques, and connect with other food enthusiasts. Whether you are a seasoned chef or an aspiring home cook, discover new flavors, learn from culinary experts, and embark on a flavorful journey.
               </p>
               <p>
-                <span style={{ color: '#3e8484' }}>Tasty Tales</span> is a recipe platform dedicated to providing unique culinary experiences.
+                <span style={{ color: 'black', fontWeight: 'bold' }}>Tasty Tales</span> is a recipe platform dedicated to providing unique culinary experiences.
               </p>
             </div>
           </Col>

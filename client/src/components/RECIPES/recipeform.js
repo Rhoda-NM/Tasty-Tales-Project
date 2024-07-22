@@ -3,6 +3,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../navbar';
+import Footer from '../footer';
 
 const RecipeForm = () => {
   const { user } = useAuth();
@@ -62,6 +64,8 @@ const RecipeForm = () => {
   };
 
   return (
+    <>
+    <NavBar />
     <div style={backgroundImageStyle}>
       <form onSubmit={formik.handleSubmit}>
         <div>
@@ -154,6 +158,8 @@ const RecipeForm = () => {
         <button type="submit">Add Recipe</button>
       </form>
     </div>
+    
+    </>
   );
 };
 

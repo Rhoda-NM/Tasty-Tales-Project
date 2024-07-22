@@ -125,7 +125,7 @@ def fetch_and_save(meal_id):
 @recipe_bp.route('/search', methods=['GET'])
 def search_recipes():
     query = request.args.get('q')
-    print(query)
+    #print(query)
     if not query:
         return jsonify({'error': 'Query parameter is required'}), 400
     
@@ -181,6 +181,8 @@ def add_rating(id):
 
     return jsonify(new_rating.to_dict()), 201
 
+
+# add recipe
 @recipe_bp.route('/recipes', methods=['POST'])
 @jwt_required()
 def add_recipe():

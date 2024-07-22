@@ -1,357 +1,356 @@
-# Phase 4 Full-Stack Application Project Template
+**Tasty Tales Project**
+=======================
 
-## Learning Goals
+## Table Of Contents
 
-- Discuss the basic directory structure of a full-stack Flask/React application.
-- Carry out the first steps in creating your Phase 4 project.
+1.  Introduction
 
----
+2.  Installation
+
+3.  Running the Application
+    
+4.  Usage
+    
+5.  Features
+    
+6.  Project Structure
+    
+    *   Client Side
+        
+    *   Server Side
+        
+7.  Deployment
+
+8.  Technologies Used
+    
+9.  Contributing
+    
+10.  License
+    
 
 ## Introduction
 
-Fork and clone this lesson for a template for your full-stack application. Take
-a look at the directory structure before we begin (NOTE: node_modules will be
-generated in a subsequent step):
-
-```console
-$ tree -L 2
-$ # the -L argument limits the depth at which we look into the directory structure
-.
-├── CONTRIBUTING.md
-├── LICENSE.md
-├── Pipfile
-├── README.md
-├── client
-│   ├── README.md
-│   ├── package.json
-│   ├── public
-│   └── src
-└── server
-    ├── app.py
-    ├── config.py
-    ├── models.py
-    └── seed.py
-```
-
-A `migrations` folder will be added to the `server` directory in a later step.
-
-The `client` folder contains a basic React application, while the `server`
-folder contains a basic Flask application. You will adapt both folders to
-implement the code for your project .
-
-NOTE: If you did not previously install `tree` in your environment setup, MacOS
-users can install this with the command `brew install tree`. WSL and Linux users
-can run `sudo apt-get install tree` to download it as well.
-
-## Where Do I Start?
-
-Just as with your Phase 3 Project, this will likely be one of the biggest
-projects you've undertaken so far. Your first task should be creating a Git
-repository to keep track of your work and roll back any undesired changes.
-
-### Removing Existing Git Configuration
-
-If you're using this template, start off by removing the existing metadata for
-Github and Canvas. Run the following command to carry this out:
-
-```console
-$ rm -rf .git .canvas
-```
-
-The `rm` command removes files from your computer's memory. The `-r` flag tells
-the console to remove _recursively_, which allows the command to remove
-directories and the files within them. `-f` removes them permanently.
-
-`.git` contains this directory's configuration to track changes and push to
-Github (you want to track and push _your own_ changes instead), and `.canvas`
-contains the metadata to create a Canvas page from your Git repo. You don't have
-the permissions to edit our Canvas course, so it's not worth keeping around.
-
-### Creating Your Own Git Repo
 
-First things first- rename this directory! Once you have an idea for a name,
-move one level up with `cd ..` and run
-`mv python-p4-project-template <new-directory-name>` to change its name (replace
-<new-directory-name> with an appropriate project directory name).
+Welcome to the Tasty Tales Project. This project is a web application that allows users to browse, search, and review recipes. The application consists of a frontend built with React and a backend built with Flask-SQLAlchemy. Users can register, log in, view recipes, leave reviews, and manage recipe tags.
 
-> **Note: If you typed the `mv` command in a terminal within VS Code, you should
-> close VS Code then reopen it.**
 
-> **Note: `mv` actually stands for "move", but your computer interprets this
-> rename as a move from a directory with the old name to a directory with a new
-> name.**
 
-`cd` back into your new directory and run `git init` to create a local git
-repository. Add all of your local files to version control with `git add --all`,
-then commit them with `git commit -m'initial commit'`. (You can change the
-message here- this one is just a common choice.)
+## Setup and Installation
 
-Navigate to [GitHub](https://github.com). In the upper-right corner of the page,
-click on the "+" dropdown menu, then select "New repository". Enter the name of
-your local repo, choose whether you would like it to be public or private, make
-sure "Initialize this repository with a README" is unchecked (you already have
-one), then click "Create repository".
-
-Head back to the command line and enter
-`git remote add origin git@github.com:github-username/new-repository-name.git`.
-NOTE: Replace `github-username` with your github username, and
-`new-repository-name` with the name of your new repository. This command will
-map the remote repository to your local repository. Finally, push your first
-commit with `git push -u origin main`.
-
-Your project is now version-controlled locally and online. This will allow you
-to create different versions of your project and pick up your work on a
-different machine if the need arises.
-
----
-
-## Setup
-
-### `server/`
-
-The `server/` directory contains all of your backend code.
-
-`app.py` is your Flask application. You'll want to use Flask to build a simple
-API backend like we have in previous modules. You should use Flask-RESTful for
-your routes. You should be familiar with `models.py` and `seed.py` by now, but
-remember that you will need to use Flask-SQLAlchemy, Flask-Migrate, and
-SQLAlchemy-Serializer instead of SQLAlchemy and Alembic in your models.
-
-The project contains a default `Pipfile` with some basic dependencies. You may
-adapt the `Pipfile` if there are additional dependencies you want to add for
-your project.
-
-To download the dependencies for the backend server, run:
-
-```console
-pipenv install
-pipenv shell
-```
-
-You can run your Flask API on [`localhost:5555`](http://localhost:5555) by
-running:
-
-```console
-python server/app.py
-```
-
-Check that your server serves the default route `http://localhost:5555`. You
-should see a web page with the heading "Project Server".
-
-### `client/`
-
-The `client/` directory contains all of your frontend code. The file
-`package.json` has been configured with common React application dependencies,
-include `react-router-dom`. The file also sets the `proxy` field to forward
-requests to `"http://localhost:5555". Feel free to change this to another port-
-just remember to configure your Flask app to use another port as well!
-
-To download the dependencies for the frontend client, run:
-
-```console
-npm install --prefix client
-```
-
-You can run your React app on [`localhost:3000`](http://localhost:3000) by
-running:
-
-```sh
-npm start --prefix client
-```
-
-Check that your the React client displays a default page
-`http://localhost:3000`. You should see a web page with the heading "Project
-Client".
-
-## Generating Your Database
-
-NOTE: The initial project directory structure does not contain the `instance` or
-`migrations` folders. Change into the `server` directory:
-
-```console
-cd server
-```
-
-Then enter the commands to create the `instance` and `migrations` folders and
-the database `app.db` file:
-
-```
-flask db init
-flask db upgrade head
-```
-
-Type `tree -L 2` within the `server` folder to confirm the new directory
-structure:
-
-```console
-.
-├── app.py
-├── config.py
-├── instance
-│   └── app.db
-├── migrations
-│   ├── README
-│   ├── __pycache__
-│   ├── alembic.ini
-│   ├── env.py
-│   ├── script.py.mako
-│   └── versions
-├── models.py
-└── seed.py
-```
 
-Edit `models.py` and start creating your models. Import your models as needed in
-other modules, i.e. `from models import ...`.
-
-Remember to regularly run
-`flask db revision --autogenerate -m'<descriptive message>'`, replacing
-`<descriptive message>` with an appropriate message, and `flask db upgrade head`
-to track your modifications to the database and create checkpoints in case you
-ever need to roll those modifications back.
+To set up the project, follow these steps:
 
-> **Tip: It's always a good idea to start with an empty revision! This allows
-> you to roll all the way back while still holding onto your database. You can
-> create this empty revision with `flask db revision -m'Create DB'`.**
+1.  Clone the repository: **git clone https://github.com/Rhoda-NM/Tasty-Tales-Project.git**
+    
+2.  Install the dependencies: **pipenv install** (for the server) and **npm install** (for the client)
+    
+3.  Create a new SQLite database: **sqlite3 tasty\_tales.db**
+    
 
-If you want to seed your database, now would be a great time to write out your
-`seed.py` script and run it to generate some test data. Faker has been included
-in the Pipfile if you'd like to use that library.
+## Running the Application
 
----
 
-#### `config.py`
+To run the application, follow these steps:
 
-When developing a large Python application, you might run into a common issue:
-_circular imports_. A circular import occurs when two modules import from one
-another, such as `app.py` and `models.py`. When you create a circular import and
-attempt to run your app, you'll see the following error:
+1.  Clone the Repository: Clone the repository using **git clone https://github.com/Rhoda-NM/Tasty-Tales-Project.git**
+    
+2.  Navigate to the Project Directory: Navigate to the project directory using **cd Tasty-Tales-Project**
+    
+3.  Start the server(backend)**: python app.py**
+    
+4.  In a separate terminal, start the client(frontend)**: npm start**
+    
 
-```console
-ImportError: cannot import name
-```
 
-If you're going to need an object in multiple modules like `app` or `db`,
-creating a _third_ module to instantiate these objects can save you a great deal
-of circular grief. Here's a good start to a Flask config file (you may need more
-if you intend to include features like authentication and passwords):
+# Usage
 
-```py
-# Standard library imports
+## How it Works
 
-# Remote library imports
-from flask import Flask
-from flask_cors import CORS
-from flask_migrate import Migrate
-from flask_restful import Api
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
 
-# Local imports
+To use the Tasty Tales Project app on the client-side, follow these steps:
 
-# Instantiate app, set attributes
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.json.compact = False
+### Navigation
 
-# Define metadata, instantiate db
-metadata = MetaData(naming_convention={
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-})
-db = SQLAlchemy(metadata=metadata)
-migrate = Migrate(app, db)
-db.init_app(app)
+1.  Open the app in your browser: **http://localhost:3000**
+    
+2.  Click on the navigation links in the navbar to access different pages:
+    
+    *   **Home**: Displays the app's homepage with a banner, success stories, and developer information.
+        
+    *   **Recipes**: Displays a list of all recipes with filtering and searching capabilities.
+        
+    *   **Add Recipe**: Allows logged-in users to create a new recipe (only visible after login).
+        
+    *   **Coin Balance**: Displays the user's current coin balance and profile image (only visible after login).
+        
+    *   **Logout**: Logs the user out of the app (only visible after login).
+        
 
-# Instantiate REST API
-api = Api(app)
+### Recipe Interactions
 
-# Instantiate CORS
-CORS(app)
+1.  **Browse Recipes**: On the **Recipes** page, you can:
+    
+    *   Filter recipes by category and country using the dropdown menus.
+        
+    *   Search for recipes by title using the search bar.
+        
+    *   Scroll through the list of recipes with infinite scrolling.
+        
+2.  **View Recipe Details**: Click on a recipe to view its details, including:
+    
+    *   Recipe title, image, and description.
+        
+    *   Ingredients and instructions.
+        
+    *   Reaction buttons (like, love, etc.).
+        
+    *   Suggestions for other recipes in the same category or from the same country.
+        
+3.  **React to Recipes**: Logged-in users can react to recipes using the reaction buttons.
+    
 
-```
+### User Profile 
 
-Now let's review that last line...
+1.  **Login**: Click on the **Login** button in the navbar to log in to the app.
+    
+    
+2.  **Add Recipe**: Logged-in users can create a new recipe by clicking on the **Add Recipe** button in the navbar.
+    
 
-#### CORS
+### Searching and Filtering
 
-CORS (Cross-Origin Resource Sharing) is a system that uses HTTP headers to
-determine whether resources from different servers-of-origin can be accessed. If
-you're using the fetch API to connect your frontend to your Flask backend, you
-need to configure CORS on your Flask application instance. Lucky for us, that
-only takes one line:
+1.  **Search Bar**: Use the search bar on the **Recipes** page to search for recipes by title.
+    
+2.  **Filtering**: Use the dropdown menus on the **Recipes** page to filter recipes by category and country.
+    
 
-```py
-CORS(app)
+## Key Features
 
-```
 
-By default, Flask-CORS enables CORS on all routes in your application with all
-fetching servers. You can also specify the resources that allow CORS. The
-following specifies that routes beginning with `api/` allow CORS from any
-originating server:
+*   User registration and authentication
+    
+*   Browse and search for recipes
+    
+*   View detailed recipe information
+    
+*   Add and manage reviews
+    
+*   Tag management for recipes
+    
 
-```py
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+## Project Structure
 
-```
 
-You can also set this up resource-by-resource by importing and using the
-`@cross_origin` decorator:
+The project is divided into two main folders: **client** and **server**.
 
-```py
-@app.route("/")
-@cross_origin()
-def howdy():
-  return "Howdy partner!"
 
-```
+## Client - Frontend (React)
 
----
+The frontend code is located in the `client` directory and is responsible for rendering the user interface and handling user interactions.
 
-## Updating Your README.md
 
-`README.md` is a Markdown file that describes your project. These files can be
-used in many different ways- you may have noticed that we use them to generate
-entire Canvas lessons- but they're most commonly used as homepages for online
-Git repositories. **When you develop something that you want other people to
-use, you need to have a README.**
+## Components
 
-Markdown is not a language that we cover in Flatiron's Software Engineering
-curriculum, but it's not a particularly difficult language to learn (if you've
-ever left a comment on Reddit, you might already know the basics). Refer to the
-cheat sheet in this lesson's resources for a basic guide to Markdown.
+### Components Folder
 
-### What Goes into a README?
+The `components` folder contains reusable React components that are used throughout the application. Each component is organized into its own subfolder and includes a corresponding CSS file for styling.
 
-This README should serve as a template for your own- go through the important
-files in your project and describe what they do. Each file that you edit (you
-can ignore your migration files) should get at least a paragraph. Each function
-should get a small blurb.
+#### Header Component
 
-You should descibe your application first, and with a good level of detail. The
-rest should be ordered by importance to the user. (Probably routes next, then
-models.)
+- **Description**: Renders a navigation bar with links to the home page, login page, and recipes page.
+- **Features**: Uses `react-router-dom` for client-side routing.
 
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
+#### Home Component
 
----
+- **Description**: Renders the home page with a hero section, background image, title, and call-to-action button.
+- **Features**: Uses the `useState` hook to manage the button text state.
 
-## Conclusion
+#### Login Component
 
-A lot of work goes into a full-stack application, but it all relies on concepts
-that you've practiced thoroughly throughout this phase. Hopefully this template
-and guide will get you off to a good start with your Phase 4 Project.
+- **Description**: Renders a login form with input fields for username and password, and a submit button.
+- **Features**: Uses the `useState` hook to manage input field states and the `useHistory` hook for redirecting to the home page after successful login.
 
-Happy coding!
+#### Nav Component
 
----
+- **Description**: Renders a navigation menu with links to the home page, login page, and recipes page.
+- **Features**: Uses `react-router-dom` for client-side routing.
 
-## Resources
+#### Recipes Component
 
-- [Setting up a respository - Atlassian](https://www.atlassian.com/git/tutorials/setting-up-a-repository)
-- [Create a repo- GitHub Docs](https://docs.github.com/en/get-started/quickstart/create-a-repo)
-- [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
-- [Python Circular Imports - StackAbuse](https://stackabuse.com/python-circular-imports/)
-- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/)
+- **Description**: Renders a list of recipes fetched from an API.
+- **Features**: Uses the `useState` hook to manage recipe state and the `useEffect` hook to fetch recipes on mount.
+
+#### User Component
+
+- **Description**: Renders a user profile page with information about the logged-in user.
+- **Features**: Uses the `useState` hook to manage user information state and the `useHistory` hook for redirecting to the login page if not logged in.
+
+### Components/Recipes
+
+The `components/recipes` folder contains components related to recipe display and management.
+
+
+#### EditRecipe Component
+
+- **Description**: Renders a form for editing a recipe.
+- **Features**:
+  - Uses `useState` hook to manage form state.
+  - Uses `useEffect` hook to fetch existing recipe details on mount.
+
+
+#### RecipeCard Component
+
+- **Description**: Renders a card displaying a recipe's title, image, and description.
+- **Features**: Uses `react-router-dom` for client-side routing to the recipe detail page.
+
+#### RecipeDetail Component
+
+- **Description**: Renders a detailed view of a recipe, including title, image, description, and instructions.
+- **Features**:
+  - Uses `useState` hook to manage recipe information state.
+  - Uses `useParams` hook to fetch recipe ID from URL parameters.
+  - Uses `useEffect` hook to fetch recipe details on mount.
+#### Recipes Component
+
+- **Description**: Renders a list of recipe cards fetched from an API.
+- **Features**:
+  - Uses the `useState` hook to manage recipe state.
+  - Uses the `useEffect` hook to fetch recipes on mount.
+
+#### RecipeForm Component
+
+- **Description**: Renders a form for creating or editing a recipe.
+- **Features**: Uses the `useState` hook to manage form state and the `useHistory` hook for redirecting to the recipe list page after submission.
+
+#### Review Component
+
+- **Description**: Renders a list of reviews for a specific recipe.
+- **Features**: Uses `useState` hook to manage reviews state.
+  
+#### Search Component
+
+- **Description**: Provides a search bar to filter recipes by name or ingredients.
+- **Features**:
+  - Uses `useState` hook to manage search input state.
+  - Uses `useEffect` hook to filter recipes based on search query.
+
+
+### Components/User
+
+The `components/user` folder contains components related to user management.
+
+#### LoginForm Component
+
+- **Description**: Renders a login form with input fields for username and password, and a submit button.
+- **Features**: Uses `useState` hook to manage input field state.
+  
+
+#### UserProfile Component
+
+- **Description**: Renders a user profile page with information about the logged-in user.
+- **Features**: Uses the `useState` hook to manage user information state and the `useHistory` hook for redirecting to the login page if not logged in.
+
+#### UserForm Component
+
+- **Description**: Renders a form for creating or editing a user profile.
+- **Features**: Uses the `useState` hook to manage form state and the `useHistory` hook for redirecting to the user profile page after submission.
+
+
+
+### Other Files
+
+- **axios.js**: Exports functions for making API requests to the backend server.
+
+- **index.js**: The entry point of the application that renders the App component to the DOM.
+
+- **styles/**: Contains global CSS styles for the application.
+
+## Server - Backend (Flask)
+
+The backend code is located in the `server` directory and is responsible for handling API requests, interacting with the database, and providing data to the frontend.
+
+### API Endpoints
+
+#### Authentication
+
+- **POST /signup**: Registers a new user. Requires `userName`, `email`, and `password` in the request body.
+- **POST /login**: Authenticates a user and returns a JWT access token. Requires `email` and `password` in the request body.
+- **DELETE /delete_user**: Deletes the currently logged-in user. Requires a valid JWT token.
+- **GET /userinfo**: Retrieves the profile of the currently logged-in user. Requires a valid JWT token.
+- **PUT /update_user**: Updates the profile of the currently logged-in user. Requires a valid JWT token. Accepts `email` and `username` in the request body.
+
+#### Recipes
+
+- **GET /recipes**: Retrieves a list of all recipes.
+- **GET /recipes/<int:recipe_id>**: Retrieves a single recipe by ID.
+- **POST /recipes**: Creates a new recipe. Requires a valid JWT token. Accepts `title`, `imgUrl`, `description`, `ingredients`, `instructions`, and `tags` in the request body.
+- **PUT /recipes/<int:id>**: Updates an existing recipe. Requires a valid JWT token. Accepts `title`, `description`, `instructions`, `ingredients`, and `imgUrl` in the request body.
+- **DELETE /recipes/<int:id>**: Deletes a recipe by ID. Requires a valid JWT token.
+
+#### Comments and Ratings
+
+- **POST /recipes/<int:id>/comments**: Adds a comment to a recipe. Requires a valid JWT token. Accepts `content` in the request body.
+- **POST /recipes/<int:id>/ratings**: Adds a rating to a recipe. Requires a valid JWT token. Accepts `score` in the request body.
+
+#### Search
+
+- **GET /search**: Searches for recipes by title or ingredients. Requires a `q` query parameter.
+
+### Database
+
+The application uses SQLAlchemy for ORM and a SQL database (e.g., PostgreSQL, SQLite). The database schema includes models for `User`, `Recipe`, `Tag`, `Review`, and `Rating`.
+
+### Security
+
+The application uses JWT (JSON Web Tokens) for authentication and authorization. The JWT configuration is managed using `flask_jwt_extended`.
+
+### Error Handling
+
+The application includes custom error handling for various error types. Error responses are returned with appropriate HTTP status codes and error messages.
+
+## Technologies Used
+
+### Frontend
+
+- **React**: For building the user interface.
+- **React Router**: For client-side routing.
+- **Axios**: For making HTTP requests to the backend API.
+- **CSS**: For styling the components.
+- **Formik**:
+- **Bootstrap**:
+
+### Backend
+
+- **Flask**: A lightweight WSGI web application framework for Python. Used for creating the server-side API and handling HTTP requests.
+- **Flask-SQLAlchemy**: An extension for Flask that adds support for SQLAlchemy, an SQL toolkit and Object-Relational Mapping (ORM) library for Python.
+- **Flask-Migrate**: A Flask extension that handles SQLAlchemy database migrations, allowing schema changes to be managed more effectively.
+- **Flask-JWT-Extended**: Provides JSON Web Token (JWT) support for Flask, enabling secure authentication and authorization.
+- **SQLAlchemy**: An ORM for Python that provides a set of high-level API for interacting with relational databases.
+- **Requests**: A simple HTTP library for Python used to fetch data from external APIs.
+
+
+### Database
+
+- **SQLite**: A self-contained, high-reliability, embedded, full-featured, public-domain, SQL database engine. Used for storing the application's data in a lightweight and efficient manner.
+
+
+
+
+## Contribution
+
+Contributions are welcome! To contribute to the project, follow these steps:
+
+1.  Fork the repository
+    
+2.  Create a new branch **(git checkout -b feature/your-feature-name)**
+    
+3.  Commit your changes **(git commit -am 'Add some feature')**
+    
+4.  Push to the branch **(git push origin feature/your-feature-name)**
+    
+5.  Create a new Pull Request
+    
+
+## License
+
+This project is licensed under the MIT License.

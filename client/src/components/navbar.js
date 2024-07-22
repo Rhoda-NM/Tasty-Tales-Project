@@ -72,7 +72,7 @@ function NavBar() {
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="true"><FontAwesomeIcon icon={faUser} /> </button>
                         <ul class="dropdown-menu">
                           <li>
-                            <Link className="dropdown-item" to="/UserProfile">View Profile</Link>
+                            <Link className="dropdown-item" style={{color: "#333"}} to="/UserProfile">View Profile</Link>
                           </li>
                           <li><hr class="dropdown-divider" /></li>
                           <li>

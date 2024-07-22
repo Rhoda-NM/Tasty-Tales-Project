@@ -15,6 +15,7 @@ const EditRecipes = ({ authState }) => {
 
     useEffect(() => {
         const fetchRecipe = async () => {
+            console.log(id)
         try {
             const response = await axios.get(`/api/recipes/${id}`);
             setRecipe(response.data);
@@ -45,6 +46,19 @@ const EditRecipes = ({ authState }) => {
             console.error("Error updating recipe:", error);
         }
     };
+    const handleDelete = async (e) => {
+        const token = localStorage.getItem('token');
+        try {
+            await axios.delete(`/api/recipes/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            navigate('/myRecipes');
+        } catch (error) {
+            console.error("Error updating recipe:", error);
+        }
+    }
 
     return (
         <>
@@ -57,6 +71,9 @@ const EditRecipes = ({ authState }) => {
                 <p>{recipe.description}</p>
             </div>
             <div className="row mt-5">
+                <div>
+                    <button onClick={handleDelete}>Delete Recipe</button>
+                </div>
             <h2>Edit Recipe</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">

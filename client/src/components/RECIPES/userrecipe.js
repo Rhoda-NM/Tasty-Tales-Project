@@ -69,7 +69,7 @@ const MyRecipes = ({ authState }) => {
                                     <Link to={`/recipes/${recipe.id}`}>
                                         <div className="card" style={{ backgroundColor: cardColors[index % cardColors.length], padding: '10px', borderRadius: '10px', height: '100%' }}>
                                             <RecipeCard recipe={recipe} />
-                                            <Link to={`/editrecipe`}>
+                                            <Link to={`/editrecipe/${recipe.id}`}>
                                                 <button>Edit Recipe</button>
                                             </Link>
                                         </div>

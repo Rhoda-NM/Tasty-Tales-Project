@@ -1,9 +1,13 @@
 .title{
-    background-color: #3e8484;
+    background-color: #eeeeea;
     width: 100%;
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
+    gap: 20px;
+    padding-inline: 16px;
+    border-block-end: 1px solid var(--outline);
+    z-index: 4;
 }
 .title h1{
     font-size: 24px;
@@ -34,7 +38,7 @@
     padding: 10px 20px;
     display: flex;
     justify-content: space-between;
-    background-color: #eeeeea;
+    background-color: #98c4b9;
     border: 1px solid #706e6e;
     position: sticky;
     top: -50px;
@@ -58,7 +62,7 @@
     padding: 0;
 }
 
-.nav-links li {
+.nav-link li {
     margin: 0 5px;
     color: #333;
 }
@@ -109,3 +113,56 @@ li .nav-link {
 .content {
     padding: 20px;
 }
+/*-----------------------------------*\
+  #HERO
+\*-----------------------------------*/
+.hero { padding-inline: 16px; }
+
+.banner-card {
+  background-color: var(--image-background);
+  color: var(--white);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 480px;
+  display: grid;
+  grid-template-columns: 1fr;
+  place-content: center;
+  text-align: center;
+  padding-inline: 20px;
+  border-radius: var(--radius-8);
+}
+
+.hero .search-wrapper {
+  position: relative;
+  color: var(--on-background);
+  border-radius: var(--radius-4);
+  max-width: 480px;
+  width: 100%;
+  margin-inline: auto;
+  margin-block: 16px 12px;
+  overflow: hidden;
+}
+
+.hero .search-wrapper .leading-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+}
+
+.search-field {
+  height: 56px;
+  max-width: 500px;
+  margin: 50px 24%;
+  background-color: var(--primary-container);
+  padding-inline: 56px;
+  outline: none;
+}
+
+
+
+.search-submit:where(:hover, :focus-visible):not(:active) {
+  background-color: var(--primary-hover);
+}
+

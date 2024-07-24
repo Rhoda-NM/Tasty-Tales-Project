@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '../form.css'; // Adjusted import path for CSS styling
+import NavBar from '../navbar';
+import Footer from '../footer';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -91,6 +93,8 @@ const SignUp = () => {
     };
 
     return (
+        <>
+        <NavBar />
         <div
             className="d-flex justify-content-center align-items-center"
             style={{
@@ -105,6 +109,7 @@ const SignUp = () => {
                  style={{
                      width: '100%',
                      maxWidth: '400px',
+                     maxHeight: '1000px',
                      backgroundColor: 'rgba(255, 255, 255, 0.5)', // Semi-transparent background
                      backdropFilter: 'blur(5px)', // Blur effect
                      borderRadius: '10px', // Rounded corners
@@ -239,6 +244,8 @@ const SignUp = () => {
                 )}
             </div>
         </div>
+        < Footer />
+        </>
     );
 };
 

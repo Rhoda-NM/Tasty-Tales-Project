@@ -11,19 +11,11 @@ function NavBar() {
 
   // Track user authentication state
   const { user, logout } = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    navigate(`/search?query=${searchQuery}`);
-  };
-
-
+  
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container-fluid">
+      <nav className="navbar navbar-expand-lg ">
+        <div className="title container-fluid">
           <Link to="/" className="navbar-brand">
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <img src={img4} width={"60px"} alt="logo" />
@@ -46,16 +38,16 @@ function NavBar() {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link to="/" className="nav-link active">
+                <Link to="/" className="nav-link active" style={{color: "#333", fontSize: "20px"}}>
                   Home
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{color: "#333", fontSize: "20px"}}>
                 <Link to="/recipes" className="nav-link active">
                   Recipes
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={{color: "#333", fontSize: "20px"}}>
                 <Link to="/recipeform" className="nav-link active">
                   Add Recipe
                 </Link>
@@ -76,11 +68,11 @@ function NavBar() {
                           </li>
                           <li><hr class="dropdown-divider" /></li>
                           <li>
-                            <Link className="dropdown-item" to="/myRecipes">My Recipes</Link>
+                            <Link className="dropdown-item" to="/myRecipes" style={{color: "#333", fontSize: "20px", padding: "30px"}}>My Recipes</Link>
                           </li>
                           <li><hr class="dropdown-divider" /></li>
                           <li>
-                            <Link className="dropdown-item" to="/user/profile">Sign Out</Link>
+                            <Link className="dropdown-item" to="/user/profile" style={{color: "#333", fontSize: "20px", padding: "30px"}}>Sign Out</Link>
                           </li>
                           <li><hr class="dropdown-divider" /></li>
                         </ul>
@@ -89,31 +81,18 @@ function NavBar() {
                   ) : (
                     // Show Login button if not authenticated
                     <>
-                      <Link to="/login" className="nav-link active">
+                      <Link to="/login" className="nav-link active" style={{color: "#333", fontSize: "20px", padding: "30px"}}>
                         Sign In
                       </Link>
                       |
-                      <Link to="/signup" className="nav-link active">
+                      <Link to="/signup" className="nav-link active" style={{color: "#333", fontSize: "20px", padding: "30px"}}>
                         Register
                       </Link>
                     </>
                   )}
                 </h3>
               </div>
-              <div className="search-bar ms-3" >
-                <form onSubmit={handleSearch} className="d-flex" style={{display: "flex"}}>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="Search..." 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <button type="submit" className="btn btn-outline-light ms-2">
-                    Search
-                  </button>
-                </form>
-              </div>
+              
             </div>
           </div>
         </div>

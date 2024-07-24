@@ -71,8 +71,8 @@ const EditRecipes = ({ authState }) => {
                 <p>{recipe.description}</p>
             </div>
             <div className="row mt-5">
-                <div>
-                    <button onClick={handleDelete}>Delete Recipe</button>
+                <div className="col-12 mb-3">
+                    <button onClick={handleDelete} className="btn btn-danger">Delete Recipe</button>
                 </div>
             <h2>Edit Recipe</h2>
             <form onSubmit={handleSubmit}>

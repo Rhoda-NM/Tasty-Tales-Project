@@ -158,7 +158,7 @@ const RecipeForm = () => {
         <button type="submit">Add Recipe</button>
       </form>
     </div>
-    
+    <Footer />
     </>
   );
 };

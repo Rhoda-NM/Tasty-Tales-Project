@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../form.css';
+import NavBar from '../navbar';
+import Footer from '../footer';
 
 const Login = () => {
   const { login } = useAuth();
@@ -26,6 +28,8 @@ const Login = () => {
   };
 
   return (
+    <>
+    <NavBar />
     <div
       className="d-flex justify-content-center align-items-center"
       style={{
@@ -81,6 +85,8 @@ const Login = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

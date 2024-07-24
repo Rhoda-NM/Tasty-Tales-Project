@@ -30,13 +30,21 @@ const Login = () => {
       className="d-flex justify-content-center align-items-center"
       style={{
         minHeight: '100vh',
-        backgroundImage: 'url(https://images.pexels.com/photos/1486974/pexels-photo-1486974.jpeg?auto=compress&cs=tinysrgb&w=800)',
+        backgroundImage: 'url(https://images.creativemarket.com/0.1.0/ps/106400/1360/1924/m1/fpnw/wm1/ivphkooyxa5a2riftjbhe9r3zbipqlfc4wvwflk7o0xk0xfqrfb45nywjoukmedn-.jpg?1399222065&s=792b3e1cc37d2bbf9408ae4455aec6c6)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <div className="bg-white p-5 rounded shadow" style={{ width: '100%', maxWidth: '400px' }}>
+      <div className="p-5 rounded shadow"
+           style={{
+             width: '100%',
+             maxWidth: '400px',
+             backgroundColor: 'rgba(255, 255, 255, 0.5)', // Increased transparency
+             backdropFilter: 'blur(5px)', // Blur effect for the background
+             borderRadius: '10px', // Rounded corners
+             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' // Subtle shadow for depth
+           }}>
         <h1 className="text-center mb-4">Sign In</h1>
         <Formik
           initialValues={{ email: '', password: '' }}

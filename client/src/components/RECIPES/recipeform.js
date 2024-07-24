@@ -3,6 +3,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '../AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
+import NavBar from '../navbar';
+import Footer from '../footer';
 
 const RecipeForm = () => {
   const { user } = useAuth();
@@ -51,96 +54,129 @@ const RecipeForm = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div>
-        <label htmlFor="title">Title</label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.title}
-        />
-        {formik.touched.title && formik.errors.title ? (
-          <div>{formik.errors.title}</div>
-        ) : null}
-      </div>
+    <>
+      <NavBar />
+       
+      <div className='container' style={{ padding: "50px", background: 'url("https://st4.depositphotos.com/9012638/30613/i/450/depositphotos_306130638-stock-photo-herb-and-spices-cooking-background.jpg")'}}>
+          <form onSubmit={formik.handleSubmit}>
+          
+          <div className='row mb-3'>
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm" htmlFor="title">Title</label>
+            <div className='col-sm-8'>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.title}
+                class="form-control form-control-sm"
+              />
+            </div>
+            
+            {formik.touched.title && formik.errors.title ? (
+              <div>{formik.errors.title}</div>
+            ) : null}
+          </div>
 
-      <div>
-        <label htmlFor="imgUrl">Image URL</label>
-        <input
-          type="text"
-          id="imgUrl"
-          name="imgUrl"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.imgUrl}
-        />
-        {formik.touched.imgUrl && formik.errors.imgUrl ? (
-          <div>{formik.errors.imgUrl}</div>
-        ) : null}
-      </div>
+          <div className='row mb-3'>
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm" htmlFor="imgUrl">Image URL</label>
+            <div className='col-sm-8'>
+              <input
+                type="text"
+                id="imgUrl"
+                name="imgUrl"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.imgUrl}
+                class="form-control form-control-sm"
+              />
+            </div>
+            
+            {formik.touched.imgUrl && formik.errors.imgUrl ? (
+              <div>{formik.errors.imgUrl}</div>
+            ) : null}
+          </div>
 
-      <div>
-        <label htmlFor="description">Description</label>
-        <textarea
-          id="description"
-          name="description"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.description}
-        />
-        {formik.touched.description && formik.errors.description ? (
-          <div>{formik.errors.description}</div>
-        ) : null}
-      </div>
+          <div className='row mb-3'>
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm" htmlFor="description">Description</label>
+            <div className='col-sm-8'>
+              <textarea
+                id="description"
+                name="description"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.description}
+                class="form-control form-control-sm"
+              />
+            </div>
+            
+            {formik.touched.description && formik.errors.description ? (
+              <div>{formik.errors.description}</div>
+            ) : null}
+          </div>
 
-      <div>
-        <label htmlFor="ingredients">Ingredients</label>
-        <textarea
-          id="ingredients"
-          name="ingredients"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.ingredients}
-        />
-        {formik.touched.ingredients && formik.errors.ingredients ? (
-          <div>{formik.errors.ingredients}</div>
-        ) : null}
-      </div>
+          <div className='row mb-3'>
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm" htmlFor="ingredients">Ingredients</label>
+            <div className='col-sm-8'>
+              <textarea
+                id="ingredients"
+                name="ingredients"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.ingredients}
+                class="form-control form-control-sm"
+              />
+            </div>
+            
+            {formik.touched.ingredients && formik.errors.ingredients ? (
+              <div>{formik.errors.ingredients}</div>
+            ) : null}
+          </div>
 
-      <div>
-        <label htmlFor="instructions">Instructions</label>
-        <textarea
-          id="instructions"
-          name="instructions"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.instructions}
-        />
-        {formik.touched.instructions && formik.errors.instructions ? (
-          <div>{formik.errors.instructions}</div>
-        ) : null}
-      </div>
+          <div className='row mb-3'>
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm" htmlFor="instructions">Instructions</label>
+            <div className='col-sm-8'>
+              <textarea
+                id="instructions"
+                name="instructions"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.instructions}
+                class="form-control form-control-sm"
+              />
+            </div>
+            
+            {formik.touched.instructions && formik.errors.instructions ? (
+              <div>{formik.errors.instructions}</div>
+            ) : null}
+          </div>
 
-      <div>
-        <label htmlFor="tags">Tags (comma-separated)</label>
-        <input
-          type="text"
-          id="tags"
-          name="tags"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.tags}
-        />
-        {formik.touched.tags && formik.errors.tags ? (
-          <div>{formik.errors.tags}</div>
-        ) : null}
-      </div>
+          <div className='row mb-3'>
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm" htmlFor="tags">Tags (comma-separated)</label>
+            <div className='col-sm-8'>
+              <input
+                type="text"
+                id="tags"
+                name="tags"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.tags}
+                class="form-control form-control-sm"
+              />
+            </div>
+            
+            {formik.touched.tags && formik.errors.tags ? (
+              <div>{formik.errors.tags}</div>
+            ) : null}
+          </div>
 
-      <button type="submit">Add Recipe</button>
-    </form>
+          <button type="submit">Add Recipe</button>
+        </form>
+      </div>
+      
+      <Footer />
+    </>
   );
 };
 

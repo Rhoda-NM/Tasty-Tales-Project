@@ -91,22 +91,38 @@ const SignUp = () => {
     };
 
     return (
-        <div className="container d-flex justify-content-center align-items-center vh-100"
-             style={{ backgroundImage: 'url("https://images.pexels.com/photos/4629633/pexels-photo-4629633.jpeg?auto=compress&cs=tinysrgb&w=800")', backgroundSize: 'cover' }}>
-            <div className="card p-4">
+        <div
+            className="d-flex justify-content-center align-items-center"
+            style={{
+                minHeight: '100vh',
+                backgroundImage: 'url("https://images.creativemarket.com/0.1.0/ps/106400/1360/1924/m1/fpnw/wm1/ivphkooyxa5a2riftjbhe9r3zbipqlfc4wvwflk7o0xk0xfqrfb45nywjoukmedn-.jpg?1399222065&s=792b3e1cc37d2bbf9408ae4455aec6c6")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
+            <div className="p-5 rounded shadow"
+                 style={{
+                     width: '100%',
+                     maxWidth: '400px',
+                     backgroundColor: 'rgba(255, 255, 255, 0.5)', // Semi-transparent background
+                     backdropFilter: 'blur(5px)', // Blur effect
+                     borderRadius: '10px', // Rounded corners
+                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' // Subtle shadow
+                 }}>
                 {success ? (
                     <div className="text-center">
                         <h1>Success!</h1>
                         <p>
-                            <a href="/login" className="text-danger">Sign In</a>
+                            <a href="/login" className="btn btn-outline-primary mt-2">Sign In</a>
                         </p>
                     </div>
                 ) : (
                     <div className="signup-form">
                         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                        <h1 className="text-center">Register</h1>
+                        <h1 className="text-center mb-4">Register</h1>
                         <form onSubmit={handleSignup}>
-                            <div className="mb-3">
+                            <div className="form-group mb-3">
                                 <label htmlFor="username" className="form-label">
                                     Username:
                                     <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
@@ -134,7 +150,7 @@ const SignUp = () => {
                                 </p>
                             </div>
 
-                            <div className="mb-3">
+                            <div className="form-group mb-3">
                                 <label htmlFor="email" className="form-label">
                                     Email:
                                     <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
@@ -159,7 +175,7 @@ const SignUp = () => {
                                 </p>
                             </div>
 
-                            <div className="mb-3">
+                            <div className="form-group mb-3">
                                 <label htmlFor="password" className="form-label">
                                     Password:
                                     <FontAwesomeIcon icon={faCheck} className={validPassword ? "valid" : "hide"} />
@@ -185,7 +201,7 @@ const SignUp = () => {
                                 </p>
                             </div>
 
-                            <div className="mb-3">
+                            <div className="form-group mb-3">
                                 <label htmlFor="confirm_password" className="form-label">
                                     Confirm Password:
                                     <FontAwesomeIcon icon={faCheck} className={validMatch && confirmPassword ? "valid" : "hide"} />
@@ -209,12 +225,16 @@ const SignUp = () => {
                                 </p>
                             </div>
 
-                            <button className="btn btn-primary" disabled={!validName || !validEmail || !validPassword || !validMatch}>Sign Up</button>
+                            <div className="text-center">
+                                <button className="btn btn-primary text-dark" disabled={!validName || !validEmail || !validPassword || !validMatch}>Sign Up</button>
+                            </div>
                         </form>
-                        <p className="mt-3">
-                            Already registered?<br />
-                            <a href="/login" className="text-danger">Sign In</a>
-                        </p>
+                        <div className="text-center mt-3">
+                            <p>
+                                Already registered?<br />
+                                <a href="/login" className="btn btn-outline-primary mt-2">Sign In</a>
+                            </p>
+                        </div>
                     </div>
                 )}
             </div>
